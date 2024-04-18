@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Loader2, TableRowsSplit } from "lucide-react";
 import { isSupportedImageType, toBase64 } from "@/utils";
+import { Results } from "@/components/results";
 
 export default function Page(): JSX.Element {
   const [isDraggingOver, setIsDraggingOver] = useState(false);
@@ -80,72 +81,79 @@ export default function Page(): JSX.Element {
   }
 
   return (
-    <div
-      className={cn(
-        "rounded-md border-2 border-dashed text-gray-700 dark:text-gray-300 cursor-pointer transition-colors ease-in-out relative group select-none grow pointer-events-none [@media(hover:hover)]:pointer-events-auto",
-        {
-          "border-gray-500 hover:border-black dark:border-gray-600 dark:hover:border-gray-400":
-            !isDraggingOver,
-          "border-blue-300 dark:border-blue-700": isDraggingOver,
-        }
-      )}
-      onClick={() => inputRef.current?.click()}
-    >
-      {blobURL && (
-        <Image
-          src={blobURL}
-          unoptimized
-          fill
-          className="lg:object-contain object-cover min-h-16"
-          alt="Uploaded image"
-        />
-      )}
-
+    <>
       <div
         className={cn(
-          "rounded-md flex flex-col w-full h-full p-3 items-center justify-center text-center absolute bg-gray-100/70 dark:bg-neutral-950 text-lg font-mono",
+          "rounded-md border-2 border-dashed text-gray-700 dark:text-gray-300 cursor-pointer transition-colors ease-in-out relative group select-none grow pointer-events-none [@media(hover:hover)]:pointer-events-auto",
           {
-            "opacity-0 group-hover:opacity-100 transition ease-in-out": false,
+            "border-gray-500 hover:border-black dark:border-gray-600 dark:hover:border-gray-400":
+              !isDraggingOver,
+            "border-blue-300 dark:border-blue-700": isDraggingOver,
           }
         )}
+        onClick={() => inputRef.current?.click()}
       >
-        {false ? (
-          <Loader2 className="animate-spin size-12" />
-        ) : (
-          <>
-            <TableRowsSplit className="size-28" />
-            <p className="font-bold mb-1 sm:mb-4 text-lg sm:text-3xl mt-3">
-              DB Schema to SQL Schema
-            </p>
-            <p className="hidden [@media(hover:hover)]:block">
-              Drop or paste anywhere, or click to upload.
-            </p>
-            <div className="w-56 space-y-4 [@media(hover:hover)]:hidden pointer-events-auto">
-              <button className="rounded-full w-full py-3 bg-black dark:bg-white text-white dark:text-black">
-                Tap to upload
-              </button>
-
-              <input
-                type="text"
-                onKeyDown={(e) => e.preventDefault()}
-                placeholder="Hold to paste"
-                onClick={(e) => e.stopPropagation()}
-                className="text-center w-full rounded-full py-3 bg-gray-200 dark:bg-gray-800 placeholder-black dark:placeholder-white focus:bg-white dark:focus:bg-black focus:placeholder-gray-700 dark:focus:placeholder-gray-300 transition-colors ease-in-out focus:outline-none border-2 focus:border-blue-300 dark:focus:border-blue-700 border-transparent"
-              />
-            </div>
-            <p className="text-sm mt-3 text-gray-700 dark:text-gray-300">
-              (images are not stored)
-            </p>
-          </>
+        {blobURL && (
+          <Image
+            src={blobURL}
+            unoptimized
+            fill
+            className="lg:object-contain object-cover min-h-16"
+            alt="Uploaded image"
+          />
         )}
+
+        <div
+          className={cn(
+            "rounded-md flex flex-col w-full h-full p-3 items-center justify-center text-center absolute bg-gray-100/70 dark:bg-neutral-950 text-lg font-mono",
+            {
+              "opacity-0 group-hover:opacity-100 transition ease-in-out": false,
+            }
+          )}
+        >
+          {false ? (
+            <Loader2 className="animate-spin size-12" />
+          ) : (
+            <>
+              <TableRowsSplit className="size-28" />
+              <p className="font-bold mb-1 sm:mb-4 text-lg sm:text-3xl mt-3">
+                DB Schema to SQL Schema
+              </p>
+              <p className="hidden [@media(hover:hover)]:block">
+                Drop or paste anywhere, or click to upload.
+              </p>
+              <div className="w-56 space-y-4 [@media(hover:hover)]:hidden pointer-events-auto">
+                <button className="rounded-full w-full py-3 bg-black dark:bg-white text-white dark:text-black">
+                  Tap to upload
+                </button>
+
+                <input
+                  type="text"
+                  onKeyDown={(e) => e.preventDefault()}
+                  placeholder="Hold to paste"
+                  onClick={(e) => e.stopPropagation()}
+                  className="text-center w-full rounded-full py-3 bg-gray-200 dark:bg-gray-800 placeholder-black dark:placeholder-white focus:bg-white dark:focus:bg-black focus:placeholder-gray-700 dark:focus:placeholder-gray-300 transition-colors ease-in-out focus:outline-none border-2 focus:border-blue-300 dark:focus:border-blue-700 border-transparent"
+                />
+              </div>
+              <p className="text-sm mt-3 text-gray-700 dark:text-gray-300">
+                (images are not stored)
+              </p>
+            </>
+          )}
+        </div>
+        <input
+          type="file"
+          className="hidden"
+          ref={inputRef}
+          onChange={handleInputChange}
+          accept="image/jpeg, image/png, image/gif, image/webp"
+        />
       </div>
-      <input
-        type="file"
-        className="hidden"
-        ref={inputRef}
-        onChange={handleInputChange}
-        accept="image/jpeg, image/png, image/gif, image/webp"
-      />
-    </div>
+      {(true || true) && (
+        <div className="space-y-3 basis-1/2 rounded-md bg-gray-100/70 dark:bg-neutral-950 w-full drop-shadow-sm">
+          <Results />
+        </div>
+      )}
+    </>
   );
 }
