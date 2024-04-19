@@ -10,6 +10,7 @@ import { glob } from "glob";
 import { logger } from "@/utils/logger.js";
 import { listCommands } from "@/utils/list-commands.js";
 import { showNextSteps } from "@/utils/show-next-steps.js";
+import { getSchema } from "@/utils/get-schema.js";
 
 const addArgumentsSchema = z.object({
   generation: z.string().optional(),
@@ -42,7 +43,12 @@ export const add = new Command()
         process.exit(0);
       }
 
-      // TODO: Check generation code is valid and return schema
+      const schema = await getSchema({ generationCode });
+      const { data: schemaSql, error } = schema;
+      if (!schemaSql || error) {
+        logger.error("The given generation code is wrong. Enter one valid.");
+        process.exit(0);
+      }
 
       // Looking for supabase path. I assume this cli is being running on a supabase project
       const cwd = path.resolve(process.cwd());
@@ -103,10 +109,10 @@ export const add = new Command()
         .replace(/\D/g, "")
         .slice(0, 14);
       const fileMigrationName = `${formattedTimestamp}_initial_state_schema.sql`;
-      // TODO: write schema table from api
+
       writeFileSync(
         path.join(migrationPath, fileMigrationName),
-        "SCHEMA HERE",
+        schemaSql,
         "utf-8"
       );
       migrationSpinner.succeed();
