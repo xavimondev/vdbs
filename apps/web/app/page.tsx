@@ -191,7 +191,7 @@ export default function Page(): JSX.Element {
       </div>
       {(isLoading || completion) && (
         <div className="space-y-3 basis-1/2 rounded-md bg-gray-100/70 dark:bg-neutral-950 w-full drop-shadow-sm">
-          <Results code={completion} />
+          <Results code={completion} finished={finished} />
         </div>
       )}
     </>

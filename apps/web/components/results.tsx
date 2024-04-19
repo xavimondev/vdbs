@@ -12,14 +12,17 @@ import { DeploySchema } from "@/components/deploy-schema";
 
 type ResultsProps = {
   code: string;
+  finished: boolean;
 };
 
-export function Results({ code }: ResultsProps) {
+export function Results({ code, finished }: ResultsProps) {
   return (
     <Tabs defaultValue="sqlschema" className="w-full">
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="sqlschema">SQL Schema</TabsTrigger>
-        <TabsTrigger value="migration">Migration</TabsTrigger>
+        <TabsTrigger value="migration" disabled={!finished}>
+          Migration
+        </TabsTrigger>
       </TabsList>
       <TabsContent value="sqlschema">
         <CodeEditor code={code} />
