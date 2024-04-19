@@ -1,10 +1,6 @@
 import { logger } from "@/utils/logger.js";
 
-export const showNextSteps = ({
-  projectExists,
-}: {
-  projectExists: boolean;
-}) => {
+export const showNextSteps = (projectExists: boolean) => {
   logger.info("Next Steps:");
   if (!projectExists) {
     console.log("supabase login");

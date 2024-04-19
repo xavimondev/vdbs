@@ -43,7 +43,7 @@ export const add = new Command()
         process.exit(0);
       }
 
-      const schema = await getSchema({ generationCode });
+      const schema = await getSchema(generationCode);
       const { data: schemaSql, error } = schema;
       if (!schemaSql || error) {
         logger.error("The given generation code is wrong. Enter one valid.");
@@ -75,7 +75,7 @@ export const add = new Command()
       if (!pathFound) {
         const spinner = ora(`Initializing Supabase project...`).start();
         // 1. Initialize supabase project
-        const executeCommand = await listCommands({ targetDir: cwd });
+        const executeCommand = await listCommands(cwd);
         await execa(executeCommand, ["supabase", "init"], {
           cwd: pickedPath === "supabase" ? cwd : pickedPath,
         });
@@ -119,7 +119,7 @@ export const add = new Command()
       logger.info(`${chalk.green("Success!")} Migration added successfully.`);
       logger.break();
       // 4. In order to deploy the migration remotely, user has to do the following...
-      showNextSteps({ projectExists: Boolean(pathFound) });
+      showNextSteps(Boolean(pathFound));
     } catch (error) {
       console.error(error);
     }
