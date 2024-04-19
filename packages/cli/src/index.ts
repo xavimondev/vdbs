@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { Command } from "commander";
-import { getPackageInfo } from "@/utils/package-info";
+import { getPackageInfo } from "@/utils/package-info.js";
+import { add } from "@/commands/add.js";
 
 process.on("SIGINT", () => process.exit(0));
 process.on("SIGTERM", () => process.exit(0));
@@ -17,6 +18,7 @@ async function main() {
       "display the version number"
     );
 
+  program.addCommand(add);
   program.parse();
 }
 
