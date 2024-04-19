@@ -1,6 +1,7 @@
+import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import OpenAI from "openai";
 import { OpenAIStream, StreamingTextResponse } from "ai";
-import { NextResponse } from "next/server";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
@@ -46,6 +47,12 @@ const ratelimit =
     : false;
 
 export async function POST(req: Request) {
+  const customApiKey = cookies().get("api-key")?.value;
+  if (customApiKey && customApiKey.trim().length > 0) {
+    // Set user's api key
+    openai.apiKey = customApiKey;
+  }
+
   if (process.env.NODE_ENV === "production") {
     if (ratelimit) {
       const ip = req.headers.get("x-real-ip") ?? "local";
@@ -109,9 +116,13 @@ export async function POST(req: Request) {
     return new StreamingTextResponse(stream);
   } catch (error) {
     if (error instanceof OpenAI.APIError) {
-      console.error(error.message);
-      const errorMessage =
+      let errorMessage =
         "An error has ocurred with API Completions. Please try again.";
+      if (error.code === "invalid_api_key") {
+        errorMessage =
+          "The provided API Key is invalid. Please enter a valid API Key.";
+      }
+
       const { name, status, headers } = error;
       return NextResponse.json(
         { name, status, headers, message: errorMessage },
