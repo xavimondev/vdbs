@@ -8,6 +8,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { isSupportedImageType, nanoid, toBase64 } from "@/utils";
 import { useSchemaStore } from "@/store";
+import { saveGeneration } from "@/actions";
 import { Results } from "@/components/results";
 
 const LIMIT_MB = 4.5 * 1024 * 1024;
@@ -21,17 +22,31 @@ export default function Page(): JSX.Element {
   const { complete, completion, isLoading } = useCompletion({
     api: "api/code-generation",
     onFinish: (_, completion) => {
-      setFinished(true);
+      const sqlSchema = completion
+        .split("--TABLE\n")
+        .filter((table: string) => table !== "")
+        .join("\n")
+        .trim();
 
-      setSchema({
-        sqlSchema: completion,
+      const data = {
+        sqlSchema,
         cmdCode: nanoid(),
+      };
+
+      // Saving in db the generation
+      toast.promise(saveGeneration(data), {
+        loading: "Saving Generation...",
+        success: () => {
+          setFinished(true);
+          setSchema(data);
+          return `Generation generated successfully.`;
+        },
+        error: "An error has ocurred while saving data.",
       });
-      // console.log(completion);
     },
     onError: (err) => {
       const error = JSON.parse(err.message);
-      toast.error(error);
+      toast.error(error.message);
       setBlobURL(null);
     },
   });
