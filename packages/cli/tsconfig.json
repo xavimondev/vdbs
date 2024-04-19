@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "../typescript-config/base.json",
+  "compilerOptions": {
+    "isolatedModules": false,
+    "noEmit": true,
+    "target": "ESNext",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

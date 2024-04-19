@@ -33,7 +33,7 @@ importers:
         specifier: 2.0.2
         version: 2.0.2(@types/react-dom@18.2.19)(@types/react@18.2.61)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-popover':
-        specifier: ^1.0.7
+        specifier: 1.0.7
         version: 1.0.7(@types/react-dom@18.2.19)(@types/react@18.2.61)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-slot':
         specifier: 1.0.2
@@ -138,6 +138,15 @@ importers:
       tailwindcss:
         specifier: 3.4.3
         version: 3.4.3
+      typescript:
+        specifier: 5.3.3
+        version: 5.3.3
+
+  packages/cli:
+    devDependencies:
+      '@types/node':
+        specifier: 20.11.24
+        version: 20.11.24
       typescript:
         specifier: 5.3.3
         version: 5.3.3
@@ -7037,6 +7046,7 @@ packages:
   /typescript@5.3.3:
     resolution: {integrity: sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==}
     engines: {node: '>=14.17'}
+    hasBin: true
 
   /uglify-js@3.17.4:
     resolution: {integrity: sha512-T9q82TJI9e/C1TAxYvfb16xO120tMVFZrGA3f9/P4424DNu6ypK103y0GPFVa17yotwSyZW5iYXgjYHkGrJW/g==}

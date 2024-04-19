@@ -1,0 +1,19 @@
+{
+  "name": "vdbs",
+  "version": "0.0.1",
+  "description": "Generate migrations from database diagrams",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch ./src/index.ts"
+  },
+  "keywords": [],
+  "author": {
+    "name": "xavimondev",
+    "url": "https://twitter.com/xavimondev"
+  },
+  "devDependencies": {
+    "@types/node": "20.11.24",
+    "typescript": "5.3.3"
+  }
+}
