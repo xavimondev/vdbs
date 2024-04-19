@@ -1,5 +1,11 @@
+"use client";
+
+import { useRef } from "react";
+import { toast } from "sonner";
 import Link from "next/link";
 import { HelpCircle, CircleAlert } from "lucide-react";
+import { useSchemaStore } from "@/store";
+import { schemaDeploy } from "@/services/deploy";
 import {
   Card,
   CardContent,
@@ -20,6 +26,40 @@ import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export function DeploySchema() {
+  const schema = useSchemaStore((state) => state.schema);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const deploy = async () => {
+    const urlConnection = inputRef.current?.value;
+    if (!urlConnection) {
+      toast.error("Database connection string is missing.");
+      return;
+    }
+
+    const isEmptyPassword = urlConnection.includes("[YOUR-PASSWORD]");
+
+    if (schema.trim() === "" || isEmptyPassword) {
+      toast.error(
+        "Please replace [YOUR-PASSWORD] with your actual database password."
+      );
+      return;
+    }
+
+    const result = await schemaDeploy({
+      sqlSchema: schema,
+      url: urlConnection,
+    });
+
+    const { error, message } = result;
+    if (error) {
+      toast.error(error);
+      return;
+    }
+
+    toast.success(message);
+    // console.log(schema, message);
+  };
+
   return (
     <Card className="w-full">
       <CardHeader>
@@ -59,6 +99,7 @@ export function DeploySchema() {
               </div>
               <Input
                 className="w-full"
+                ref={inputRef}
                 placeholder="postgres://postgres.[referenceId]:[YOUR-PASSWORD]@[cloud]-0-[region].pooler.supabase.com:5432/postgres"
               />
             </div>
@@ -86,7 +127,9 @@ export function DeploySchema() {
         </div>
       </CardContent>
       <CardFooter>
-        <Button className="w-full">Deploy</Button>
+        <Button className="w-full" onClick={deploy}>
+          Deploy
+        </Button>
       </CardFooter>
     </Card>
   );

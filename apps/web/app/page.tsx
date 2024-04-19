@@ -7,6 +7,7 @@ import { useCompletion } from "ai/react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { isSupportedImageType, toBase64 } from "@/utils";
+import { useSchemaStore } from "@/store";
 import { Results } from "@/components/results";
 
 const LIMIT_MB = 4.5 * 1024 * 1024;
@@ -16,10 +17,12 @@ export default function Page(): JSX.Element {
   const inputRef = useRef<HTMLInputElement>(null);
   const [blobURL, setBlobURL] = useState<string | null>(null);
   const [finished, setFinished] = useState(false);
+  const setSchema = useSchemaStore((state) => state.setSchema);
   const { complete, completion, isLoading } = useCompletion({
     api: "api/code-generation",
-    onFinish: async () => {
+    onFinish: (_, completion) => {
       setFinished(true);
+      setSchema(completion);
       // console.log(completion);
     },
     onError: (err) => {
