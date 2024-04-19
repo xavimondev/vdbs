@@ -3,6 +3,12 @@
   "version": "0.0.1",
   "description": "Generate migrations from database diagrams",
   "license": "MIT",
+  "keywords": [
+    "supabase",
+    "sql",
+    "database",
+    "migrations"
+  ],
   "type": "module",
   "exports": "./dist/index.js",
   "bin": "./dist/index.js",
