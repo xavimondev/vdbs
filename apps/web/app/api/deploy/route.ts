@@ -10,12 +10,12 @@ type ResponseJson = {
 
 export async function POST(req: Request) {
   const { url, sqlSchema } = (await req.json()) as ResponseJson;
-  console.log(sqlSchema);
-  if (url === "") {
+
+  if (url === "" || !sqlSchema) {
     return NextResponse.json(
       {
         error:
-          "We couldn't find a connection URL. Please try again with the correct connection URL.",
+          "We couldn't find a connection URL or a SQL Schema. Please try again with the correct information.",
       },
       { status: 400 }
     );
@@ -23,7 +23,8 @@ export async function POST(req: Request) {
   // Disable prefetch as it is not supported for "Transaction" pool mode
   const client = postgres(url, { prepare: false });
   const db = drizzle(client);
-
+  console.log({ url });
+  console.log({ sqlSchema });
   // Check if connection is successful
   try {
     await db.execute(sql`SELECT NOW()`);
