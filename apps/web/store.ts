@@ -1,11 +1,16 @@
 import { create } from "zustand";
 
+type SchemaData = {
+  sqlSchema: string;
+  cmdCode: string;
+};
+
 type SchemaState = {
-  schema: string;
-  setSchema: (schema: string) => void;
+  schema: SchemaData | undefined;
+  setSchema: (schema: SchemaData) => void;
 };
 
 export const useSchemaStore = create<SchemaState>()((set) => ({
-  schema: "",
+  schema: undefined,
   setSchema: (schema) => set({ schema }),
 }));

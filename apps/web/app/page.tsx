@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { useCompletion } from "ai/react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { isSupportedImageType, toBase64 } from "@/utils";
+import { isSupportedImageType, nanoid, toBase64 } from "@/utils";
 import { useSchemaStore } from "@/store";
 import { Results } from "@/components/results";
 
@@ -22,7 +22,11 @@ export default function Page(): JSX.Element {
     api: "api/code-generation",
     onFinish: (_, completion) => {
       setFinished(true);
-      setSchema(completion);
+
+      setSchema({
+        sqlSchema: completion,
+        cmdCode: nanoid(),
+      });
       // console.log(completion);
     },
     onError: (err) => {

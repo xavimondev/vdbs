@@ -32,7 +32,11 @@ export function DeploySchema() {
 
     const isEmptyPassword = urlConnection.includes("[YOUR-PASSWORD]");
 
-    if (schema.trim() === "" || isEmptyPassword) {
+    if (!schema) return;
+
+    const { sqlSchema } = schema;
+
+    if (sqlSchema.trim() === "" || isEmptyPassword) {
       toast.error(
         "Please replace [YOUR-PASSWORD] with your actual database password."
       );
@@ -40,7 +44,7 @@ export function DeploySchema() {
     }
 
     const result = await schemaDeploy({
-      sqlSchema: schema,
+      sqlSchema,
       url: urlConnection,
     });
 
