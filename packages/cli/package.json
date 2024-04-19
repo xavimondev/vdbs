@@ -3,17 +3,24 @@
   "version": "0.0.1",
   "description": "Generate migrations from database diagrams",
   "license": "MIT",
-  "main": "index.js",
+  "exports": "./dist/index.js",
+  "bin": "./dist/index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "dev": "node --watch ./src/index.ts"
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "lint": "tsc --noEmit",
+    "start": "node dist/index.js"
   },
-  "keywords": [],
   "author": {
     "name": "xavimondev",
     "url": "https://twitter.com/xavimondev"
   },
   "devDependencies": {
     "@types/node": "20.11.24",
+    "tsup": "8.0.2",
     "typescript": "5.3.3"
   }
 }
