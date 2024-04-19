@@ -20,14 +20,14 @@ const PROMPT = `You're a PostgreSQL expert specializing in SQL diagram construct
 Here is an example of table:
 
 --TABLE
-CREATE TABLE users (
+CREATE TABLE "public"."users" (
   id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   name text,
   email text,
   created_at timestamp with time zone
-  
 );
 
+Add always the schema name "public" before the table's name.
 Ensure the generated SQL code accurately represents the visual schema for Supabase, including table relationships where present. 
 Return only the SQL code without any additional characters like backticks or formatting indicators.`;
 
