@@ -46,22 +46,24 @@ const ratelimit =
     : false;
 
 export async function POST(req: Request) {
-  if (ratelimit) {
-    const ip = req.headers.get("x-real-ip") ?? "local";
+  if (process.env.NODE_ENV === "production") {
+    if (ratelimit) {
+      const ip = req.headers.get("x-real-ip") ?? "local";
 
-    const { success, limit, reset, remaining } = await ratelimit.limit(ip);
-    if (!success) {
-      return NextResponse.json(
-        { message: "You have reached your request limit for the day." },
-        {
-          status: 429,
-          headers: {
-            "X-RateLimit-Limit": limit.toString(),
-            "X-RateLimit-Remaining": remaining.toString(),
-            "X-RateLimit-Reset": reset.toString(),
-          },
-        }
-      );
+      const { success, limit, reset, remaining } = await ratelimit.limit(ip);
+      if (!success) {
+        return NextResponse.json(
+          { message: "You have reached your request limit for the day." },
+          {
+            status: 429,
+            headers: {
+              "X-RateLimit-Limit": limit.toString(),
+              "X-RateLimit-Remaining": remaining.toString(),
+              "X-RateLimit-Reset": reset.toString(),
+            },
+          }
+        );
+      }
     }
   }
 
