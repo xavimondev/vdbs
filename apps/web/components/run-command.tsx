@@ -3,15 +3,12 @@ import { useEffect, useState } from "react";
 import { Check, Terminal } from "lucide-react";
 import { CodeCommand } from "@/components/code-command";
 import { copyToClipboard } from "@/utils";
+import { useSchemaStore } from "@/store";
 
-type RunCommandProps = {
-  commandCode: string | undefined;
-  hasEffect?: boolean;
-};
-
-export function RunCommand({ commandCode }: RunCommandProps) {
+export function RunCommand() {
   const [isCopied, setIsCopied] = useState(false);
-
+  const schema = useSchemaStore((state) => state.schema);
+  const { cmdCode } = schema ?? {};
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout> | null = null;
     if (isCopied) {
@@ -47,7 +44,7 @@ export function RunCommand({ commandCode }: RunCommandProps) {
       border 
       border-zinc-700"
       onClick={async () => {
-        if (commandCode) {
+        if (cmdCode && cmdCode !== "") {
           setIsCopied(!isCopied);
           await copyToClipboard("npx vdbs add");
         }
@@ -59,7 +56,11 @@ export function RunCommand({ commandCode }: RunCommandProps) {
         ) : (
           <Terminal className="w-4 h-4" />
         )}
-        npx vdbs add <CodeCommand commandCode={"now0pp"} />
+        {cmdCode && cmdCode !== "" && (
+          <>
+            npx vdbs add <CodeCommand commandCode={cmdCode} />
+          </>
+        )}
       </div>
       <span className="sr-only">Copy cli command</span>
     </button>
