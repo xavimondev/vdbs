@@ -47,10 +47,15 @@ const ratelimit =
     : false;
 
 export async function POST(req: Request) {
-  const customApiKey = cookies().get("api-key")?.value;
-  if (customApiKey && customApiKey.trim().length > 0) {
-    // Set user's api key
-    openai.apiKey = customApiKey;
+  if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === "") {
+    return NextResponse.json(
+      {
+        data: undefined,
+        error:
+          "Missing OPENAI_API_KEY – make sure to add it to your .env file.",
+      },
+      { status: 400 }
+    );
   }
 
   if (process.env.NODE_ENV === "production") {
@@ -74,18 +79,13 @@ export async function POST(req: Request) {
     }
   }
 
-  const { prompt: base64 } = await req.json();
-
-  if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === "") {
-    return NextResponse.json(
-      {
-        data: undefined,
-        error:
-          "Missing OPENAI_API_KEY – make sure to add it to your .env file.",
-      },
-      { status: 400 }
-    );
+  const customApiKey = cookies().get("api-key")?.value;
+  if (customApiKey && customApiKey.trim().length > 0) {
+    // Set user's api key
+    openai.apiKey = customApiKey;
   }
+
+  const { prompt: base64 } = await req.json();
 
   try {
     const response = await openai.chat.completions.create({
