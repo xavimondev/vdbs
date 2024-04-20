@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+// import fetch from "node-fetch";
 
 const ENDPOINT = `https://vdbs.vercel.app/api/get-generation?code=`;
 
