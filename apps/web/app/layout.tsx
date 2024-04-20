@@ -51,7 +51,7 @@ export default function RootLayout({
       >
         <Header />
         <main className="grow flex flex-col lg:flex-row gap-6">
-          <div className="absolute inset-0 -z-10 size-full bg-transparent bg-[radial-gradient(#e5e7eb_-6px,transparent_1px)] [background-size:18px_18px]"></div>
+          <div className="absolute inset-0 -z-10 size-full bg-transparent bg-[radial-gradient(#e5e7eb_-4px,transparent_1px)] [background-size:16px_16px]"></div>
           {children}
         </main>
         <Footer />

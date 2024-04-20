@@ -51,7 +51,7 @@ export default function Page(): JSX.Element {
     },
   });
 
-  async function submit(file?: File | Blob) {
+  const submit = async (file?: File | Blob) => {
     if (!file) return;
 
     if (!isSupportedImageType(file.type)) {
@@ -73,27 +73,37 @@ export default function Page(): JSX.Element {
     setBlobURL(URL.createObjectURL(file));
     setFinished(false);
     complete(base64);
-  }
+  };
 
-  function handleDragLeave() {
+  const handleDragLeave = () => {
     setIsDraggingOver(false);
-  }
+  };
 
-  function handleDragOver(e: DragEvent) {
+  const handleDragOver = (e: DragEvent) => {
     setIsDraggingOver(true);
     e.preventDefault();
     e.stopPropagation();
     if (e.dataTransfer) e.dataTransfer.dropEffect = "copy";
-  }
+  };
 
-  async function handleDrop(e: DragEvent) {
+  const handleDrop = (e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDraggingOver(false);
 
     const file = e.dataTransfer?.files?.[0];
     submit(file);
-  }
+  };
+
+  const handlePaste = (e: ClipboardEvent) => {
+    const file = e.clipboardData?.files?.[0];
+    submit(file);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    submit(file);
+  };
 
   useEffect(() => {
     addEventListener("paste", handlePaste);
@@ -107,17 +117,7 @@ export default function Page(): JSX.Element {
       removeEventListener("dragover", handleDragOver);
       removeEventListener("dragleave", handleDragLeave);
     };
-  });
-
-  async function handlePaste(e: ClipboardEvent) {
-    const file = e.clipboardData?.files?.[0];
-    submit(file);
-  }
-
-  async function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    submit(file);
-  }
+  }, []);
 
   return (
     <>
@@ -127,7 +127,7 @@ export default function Page(): JSX.Element {
           {
             "border-gray-500 hover:border-black dark:border-gray-600 dark:hover:border-gray-400":
               !isDraggingOver,
-            "border-gray-300 dark:gray-blue-700": isDraggingOver,
+            "border-gray-300 dark:border-gray-700": isDraggingOver,
           }
         )}
         onClick={() => inputRef.current?.click()}
@@ -144,9 +144,9 @@ export default function Page(): JSX.Element {
 
         <div
           className={cn(
-            "rounded-md flex flex-col w-full h-full p-3 items-center justify-center text-center absolute bg-gray-100/70 dark:bg-neutral-950 dark:hover:bg-neutral-900 text-lg",
+            "rounded-md flex flex-col w-full h-full p-3 items-center justify-center text-center absolute bg-gray-100/70 dark:bg-neutral-900 text-lg",
             {
-              "opacity-0 group-hover:opacity-100 transition ease-in-out":
+              "opacity-0 group-hover:opacity-70 transition ease-in-out":
                 completion,
             }
           )}
@@ -155,8 +155,8 @@ export default function Page(): JSX.Element {
             <Loader2 className="animate-spin size-12" />
           ) : (
             <>
-              <TableRowsSplit className="size-28" />
-              <p className="font-bold mb-1 sm:mb-4 text-lg sm:text-5xl mt-3">
+              <TableRowsSplit className="size-20 xl:size-28" />
+              <p className="font-bold mb-1 sm:mb-4 text-xl sm:text-3xl 2xl:text-5xl mt-3">
                 DB Image to SQL Schema
               </p>
               <p className="hidden [@media(hover:hover)]:block">
@@ -171,7 +171,7 @@ export default function Page(): JSX.Element {
                   onKeyDown={(e) => e.preventDefault()}
                   placeholder="Hold to paste"
                   onClick={(e) => e.stopPropagation()}
-                  className="text-center w-full rounded-full py-3 bg-gray-200 dark:bg-gray-800 placeholder-black dark:placeholder-white focus:bg-white dark:focus:bg-black focus:placeholder-gray-700 dark:focus:placeholder-gray-300 transition-colors ease-in-out focus:outline-none border-2 focus:border-blue-300 dark:focus:border-blue-700 border-transparent"
+                  className="text-center w-full rounded-full py-3 bg-gray-200 dark:bg-gray-800 placeholder-black dark:placeholder-white focus:bg-white dark:focus:bg-black focus:placeholder-gray-700 dark:focus:placeholder-gray-300 transition-colors ease-in-out focus:outline-none border-2 focus:border-green-300 dark:focus:border-green-700 border-transparent"
                 />
               </div>
             </>
@@ -186,7 +186,7 @@ export default function Page(): JSX.Element {
         />
       </div>
       {(isLoading || completion) && (
-        <div className="space-y-3 basis-1/2 rounded-md bg-gray-100/70 dark:bg-neutral-950 w-full drop-shadow-sm">
+        <div className="space-y-3 lg:basis-1/2 rounded-md bg-gray-100/70 dark:bg-neutral-950 w-full drop-shadow-sm">
           <Results code={completion} finished={finished} />
         </div>
       )}

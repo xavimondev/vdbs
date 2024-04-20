@@ -91,9 +91,9 @@ export function CodeEditor({ code }: CodeEditorProps) {
       height="100%"
       theme="vs-dark"
       value={code}
-      className="h-[91vh]"
+      className="lg:h-[calc(100vh-233px)]"
       loading={
-        <div className="flex w-1/2 items-center justify-center">
+        <div className="flex items-center justify-center">
           <LoaderIcon />
         </div>
       }
