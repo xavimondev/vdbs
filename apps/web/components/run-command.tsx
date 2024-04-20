@@ -1,24 +1,14 @@
 "use client";
-import { useEffect, useState } from "react";
 import { Check, Terminal } from "lucide-react";
-import { CodeCommand } from "@/components/code-command";
+import { useClipboard } from "@/hooks/use-clipboard";
 import { copyToClipboard } from "@/utils";
 import { useSchemaStore } from "@/store";
+import { CodeCommand } from "@/components/code-command";
 
 export function RunCommand() {
-  const [isCopied, setIsCopied] = useState(false);
+  const { isCopied, setIsCopied } = useClipboard();
   const schema = useSchemaStore((state) => state.schema);
   const { cmdCode } = schema ?? {};
-  useEffect(() => {
-    let timeout: ReturnType<typeof setTimeout> | null = null;
-    if (isCopied) {
-      timeout = setTimeout(() => setIsCopied(false), 2000);
-    }
-
-    return () => {
-      timeout && clearTimeout(timeout);
-    };
-  }, [isCopied]);
 
   return (
     <button
