@@ -9,6 +9,9 @@
     "lint:cli": "turbo lint --filter=vdbs",
     "build:cli": "turbo --filter=vdbs build",
     "dev:cli": "turbo --filter=vdbs dev",
+    "release": "changeset version",
+    "changeset:add": "changeset add",
+    "changeset:status": "changeset status --verbose",
     "release:cli": "changeset publish",
     "dev:web": "turbo --filter=web dev"
   },
