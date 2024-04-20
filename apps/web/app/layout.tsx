@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { APP_URL } from "@/constants";
 import { Toaster } from "@/components/ui/sonner";
 import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -45,11 +46,15 @@ export default function RootLayout({
       <body
         className={cn(
           inter.className,
-          "dark p-2 xl:p-3 min-h-dvh flex flex-col"
+          "dark p-5 lg:p-12 min-h-dvh flex flex-col"
         )}
       >
         <Header />
-        <main className="grow flex flex-col lg:flex-row gap-6">{children}</main>
+        <main className="grow flex flex-col lg:flex-row gap-6">
+          <div className="absolute inset-0 -z-10 size-full bg-transparent bg-[radial-gradient(#e5e7eb_-6px,transparent_1px)] [background-size:18px_18px]"></div>
+          {children}
+        </main>
+        <Footer />
         <Toaster />
       </body>
     </html>

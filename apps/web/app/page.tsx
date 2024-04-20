@@ -144,7 +144,7 @@ export default function Page(): JSX.Element {
 
         <div
           className={cn(
-            "rounded-md flex flex-col w-full h-full p-3 items-center justify-center text-center absolute bg-gray-100/70 dark:bg-neutral-950 dark:hover:bg-neutral-950/40 text-lg font-mono",
+            "rounded-md flex flex-col w-full h-full p-3 items-center justify-center text-center absolute bg-gray-100/70 dark:bg-neutral-950 dark:hover:bg-neutral-900 text-lg",
             {
               "opacity-0 group-hover:opacity-100 transition ease-in-out":
                 completion,
@@ -156,8 +156,8 @@ export default function Page(): JSX.Element {
           ) : (
             <>
               <TableRowsSplit className="size-28" />
-              <p className="font-bold mb-1 sm:mb-4 text-lg sm:text-3xl mt-3">
-                DB Schema to SQL Schema
+              <p className="font-bold mb-1 sm:mb-4 text-lg sm:text-5xl mt-3">
+                DB Image to SQL Schema
               </p>
               <p className="hidden [@media(hover:hover)]:block">
                 Drop or paste anywhere, or click to upload.
@@ -166,7 +166,6 @@ export default function Page(): JSX.Element {
                 <button className="rounded-full w-full py-3 bg-black dark:bg-white text-white dark:text-black">
                   Tap to upload
                 </button>
-
                 <input
                   type="text"
                   onKeyDown={(e) => e.preventDefault()}
@@ -175,9 +174,6 @@ export default function Page(): JSX.Element {
                   className="text-center w-full rounded-full py-3 bg-gray-200 dark:bg-gray-800 placeholder-black dark:placeholder-white focus:bg-white dark:focus:bg-black focus:placeholder-gray-700 dark:focus:placeholder-gray-300 transition-colors ease-in-out focus:outline-none border-2 focus:border-blue-300 dark:focus:border-blue-700 border-transparent"
                 />
               </div>
-              <p className="text-sm mt-3 text-gray-700 dark:text-gray-300">
-                (images are not stored)
-              </p>
             </>
           )}
         </div>
