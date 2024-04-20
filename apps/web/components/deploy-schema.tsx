@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { toast } from "sonner";
 import Link from "next/link";
 import { CircleAlert } from "lucide-react";
+import { triggerConfetti } from "@/utils";
 import { useSchemaStore } from "@/store";
 import { schemaDeploy } from "@/services/deploy";
 import {
@@ -55,7 +56,7 @@ export function DeploySchema() {
     }
 
     toast.success(message);
-    // console.log(schema, message);
+    triggerConfetti();
   };
 
   return (
