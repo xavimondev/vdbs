@@ -36,7 +36,7 @@ export function RunCommand() {
       onClick={async () => {
         if (cmdCode && cmdCode !== "") {
           setIsCopied(!isCopied);
-          await copyToClipboard("npx vdbs add");
+          await copyToClipboard(`npx vdbs add ${cmdCode}`);
         }
       }}
     >
