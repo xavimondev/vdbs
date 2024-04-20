@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 
-const ENDPOINT = `http://localhost:3000/api/get-generation?code=`;
+const ENDPOINT = `https://vdbs.vercel.app/api/get-generation?code=`;
 
 type DataResponse = { data?: string; error?: string };
 
