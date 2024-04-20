@@ -5,7 +5,12 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "lint:cli": "turbo lint --filter=vdbs",
+    "build:cli": "turbo --filter=vdbs build",
+    "dev:cli": "turbo --filter=vdbs dev",
+    "release:cli": "changeset publish",
+    "dev:web": "turbo --filter=web dev"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
@@ -16,5 +21,8 @@
   "packageManager": "pnpm@8.9.0",
   "engines": {
     "node": ">=18"
+  },
+  "dependencies": {
+    "@changesets/cli": "2.27.1"
   }
 }

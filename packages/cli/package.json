@@ -20,7 +20,9 @@
     "build": "tsup",
     "lint": "tsc --noEmit",
     "start": "node dist/index.js",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "pub:beta": "pnpm build && pnpm publish --no-git-checks --tag beta",
+    "pub:release": "pnpm build && pnpm publish"
   },
   "author": {
     "name": "xavimondev",
