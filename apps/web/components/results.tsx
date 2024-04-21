@@ -17,7 +17,7 @@ type ResultsProps = {
 
 export function Results({ code, finished }: ResultsProps) {
   return (
-    <Tabs defaultValue="sqlschema" className="w-full">
+    <Tabs defaultValue="sqlschema" className="size-full">
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="sqlschema">SQL Schema</TabsTrigger>
         <TabsTrigger value="migration" disabled={!finished}>
@@ -28,16 +28,16 @@ export function Results({ code, finished }: ResultsProps) {
         <CodeEditor code={code} />
       </TabsContent>
       <TabsContent value="migration">
-        <div className="flex flex-col gap-6">
-          <Card className="w-full">
-            <CardHeader>
+        <div className="flex flex-col gap-2 justify-between">
+          <Card className="size-full">
+            <CardHeader className="p-4">
               <CardTitle className="text-lg">Run command</CardTitle>
               <CardDescription>
                 Run this command locally to create a script of your database
                 migration.
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-4">
               <RunCommand />
             </CardContent>
           </Card>

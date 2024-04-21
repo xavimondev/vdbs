@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 import Link from "next/link";
 import { CircleAlert } from "lucide-react";
-import { triggerConfetti } from "@/utils";
+import { getReferenceId, triggerConfetti } from "@/utils";
 import { useSchemaStore } from "@/store";
 import { schemaDeploy } from "@/services/deploy";
 import {
@@ -19,9 +19,14 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { DeployResult } from "@/components/deploy-result";
 
 export function DeploySchema() {
   const schema = useSchemaStore((state) => state.schema);
+  const [supabaseLinkTables, setSupabaseLinkTables] = useState<
+    string | undefined
+  >(undefined);
+
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const deploy = async () => {
@@ -57,19 +62,24 @@ export function DeploySchema() {
 
     toast.success(message);
     triggerConfetti();
+
+    //Setting redirect URL dashboard tables
+    const referenceId = getReferenceId(urlConnection);
+    const supabaseLinkTables = `https://supabase.com/dashboard/project/${referenceId}/editor`;
+    setSupabaseLinkTables(supabaseLinkTables);
   };
 
   return (
-    <Card className="w-full">
-      <CardHeader>
+    <Card className="size-full">
+      <CardHeader className="p-4">
         <CardTitle className="text-lg">Connect project</CardTitle>
         <CardDescription>
           Deploy your migration script to your Supabase project.
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-4">
         <div className="flex flex-col md:flex-row gap-4 w-full">
-          <div className="flex flex-col gap-7 w-full">
+          <div className="flex flex-col gap-5 w-full">
             <div className="flex flex-col gap-2">
               <div className="flex flex-col gap-2">
                 <Label>Database Connection URL</Label>
@@ -92,7 +102,6 @@ export function DeploySchema() {
                 in the Supabase dashboard.
               </p>
             </div>
-
             <Alert variant="destructive" className="bg-destructive/20">
               <CircleAlert className="size-5 text-red-500/90" />
               <AlertTitle className="font-medium text-base text-red-500/90">
@@ -100,8 +109,7 @@ export function DeploySchema() {
               </AlertTitle>
               <AlertDescription className="text-red-500/90">
                 The credentials you provide are used exclusively for validating
-                your database connection and performing the migration script. We
-                do not store your database credentials. You can examine the{" "}
+                your database connection. You can examine the{" "}
                 <Link
                   href="https://github.com/xavimon/supamigration"
                   target="_blank"
@@ -116,10 +124,13 @@ export function DeploySchema() {
           </div>
         </div>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="w-full px-4 flex-col gap-4 xl:gap-8">
         <Button className="w-full" onClick={deploy}>
           Deploy
         </Button>
+        {supabaseLinkTables && supabaseLinkTables !== "" && (
+          <DeployResult supabaseLinkTables={supabaseLinkTables} />
+        )}
       </CardFooter>
     </Card>
   );

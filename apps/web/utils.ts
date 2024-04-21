@@ -71,3 +71,12 @@ export const triggerConfetti = () => {
     startVelocity: 45,
   });
 };
+
+export const getReferenceId = (connectionString: string) => {
+  const chunks = connectionString.split(".");
+  if (chunks.length >= 2) {
+    const referenceId = chunks[1]?.split(":")[0];
+    return referenceId;
+  }
+  return;
+};
