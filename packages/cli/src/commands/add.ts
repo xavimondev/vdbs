@@ -11,6 +11,7 @@ import { logger } from "@/utils/logger.js";
 import { listCommands } from "@/utils/list-commands.js";
 import { showNextSteps } from "@/utils/show-next-steps.js";
 import { getSchema } from "@/utils/get-schema.js";
+import { handleError } from "@/utils/handleError.js";
 
 const addArgumentsSchema = z.object({
   generation: z.string().optional(),
@@ -121,7 +122,7 @@ export const add = new Command()
       // 4. In order to deploy the migration remotely, user has to do the following...
       showNextSteps(Boolean(pathFound));
     } catch (error) {
-      console.error(error);
+      handleError(error);
     }
   });
 
