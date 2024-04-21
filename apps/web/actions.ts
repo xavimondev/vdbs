@@ -13,11 +13,12 @@ export const saveGeneration = async (data: {
   return res;
 };
 
-export const setApiKey = (formData: FormData) => {
+export const setApiKey = (prevState: any, formData: FormData) => {
   const apiKey = formData.get("key") as string;
   cookies().set("api-key", apiKey, {
     secure: true,
   });
+  return { msg: "Key Saved Successfully" };
 };
 
 export const getApiKey = async () => {
