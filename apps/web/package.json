@@ -18,6 +18,7 @@
     "@radix-ui/react-tooltip": "1.0.7",
     "@upstash/ratelimit": "1.1.1",
     "@upstash/redis": "1.30.0",
+    "@vercel/analytics": "1.2.2",
     "ai": "3.0.24",
     "canvas-confetti": "1.9.2",
     "class-variance-authority": "0.7.0",
