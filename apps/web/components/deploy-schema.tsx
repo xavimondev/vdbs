@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import Link from "next/link";
-import { CircleAlert } from "lucide-react";
+import { CircleAlert, Loader2 } from "lucide-react";
 import { getReferenceId, triggerConfetti } from "@/utils";
 import { useSchemaStore } from "@/store";
 import { schemaDeploy } from "@/services/deploy";
@@ -26,8 +26,8 @@ export function DeploySchema() {
   const [supabaseLinkTables, setSupabaseLinkTables] = useState<
     string | undefined
   >(undefined);
-
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const deploy = async () => {
     const urlConnection = inputRef.current?.value;
@@ -49,6 +49,7 @@ export function DeploySchema() {
       return;
     }
 
+    setIsLoading(true);
     const result = await schemaDeploy({
       sqlSchema,
       url: urlConnection,
@@ -62,6 +63,7 @@ export function DeploySchema() {
 
     toast.success(message);
     triggerConfetti();
+    setIsLoading(false);
 
     //Setting redirect URL dashboard tables
     const referenceId = getReferenceId(urlConnection);
@@ -125,8 +127,9 @@ export function DeploySchema() {
         </div>
       </CardContent>
       <CardFooter className="w-full px-4 flex-col gap-4 xl:gap-8">
-        <Button className="w-full" onClick={deploy}>
-          Deploy
+        <Button className="w-full" onClick={deploy} disabled={isLoading}>
+          {isLoading && <Loader2 className="animate-spin size-5 mr-2" />}
+          {isLoading ? "Deploying..." : "Deploy"}
         </Button>
         {supabaseLinkTables && supabaseLinkTables !== "" && (
           <DeployResult supabaseLinkTables={supabaseLinkTables} />
