@@ -23,8 +23,6 @@ export async function POST(req: Request) {
   // Disable prefetch as it is not supported for "Transaction" pool mode
   const client = postgres(url, { prepare: false });
   const db = drizzle(client);
-  console.log({ url });
-  console.log({ sqlSchema });
   // Check if connection is successful
   try {
     await db.execute(sql`SELECT NOW()`);
