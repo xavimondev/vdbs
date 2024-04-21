@@ -33,7 +33,6 @@ Add always the schema name "public" before the table's name.
 Ensure the generated SQL code accurately represents the visual schema for Supabase, including table relationships where present. 
 Return only the SQL code without any additional characters like backticks or formatting indicators.`;
 
-// TODO: add environment variables
 const ratelimit =
   process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
     ? new Ratelimit({
@@ -58,7 +57,10 @@ export async function POST(req: Request) {
     );
   }
 
-  if (process.env.NODE_ENV === "production") {
+  const customApiKey = cookies().get("api-key")?.value;
+  const hasCustomApiKey = customApiKey && customApiKey.trim().length > 0;
+
+  if (process.env.NODE_ENV === "production" && !customApiKey) {
     if (ratelimit) {
       const ip = req.headers.get("x-real-ip") ?? "local";
 
@@ -79,8 +81,7 @@ export async function POST(req: Request) {
     }
   }
 
-  const customApiKey = cookies().get("api-key")?.value;
-  if (customApiKey && customApiKey.trim().length > 0) {
+  if (hasCustomApiKey) {
     // Set user's api key
     openai.apiKey = customApiKey;
   }
