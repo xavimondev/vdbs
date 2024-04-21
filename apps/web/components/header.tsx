@@ -31,7 +31,7 @@ export function Header() {
                 </span>
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-[400px]">
+            <PopoverContent className="w-[400px]" align="end">
               <div className="flex flex-col gap-5">
                 <FormApiKey />
               </div>
