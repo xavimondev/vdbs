@@ -86,7 +86,7 @@ export function DeploySchema() {
               <div className="flex flex-col gap-2">
                 <Label>Database Connection URL</Label>
                 <Input
-                  className="w-full"
+                  className="w-full placeholder:text-muted-foreground/50"
                   ref={inputRef}
                   placeholder="postgres://postgres.[referenceId]:[YOUR-PASSWORD]@[cloud]-0-[region].pooler.supabase.com:5432/postgres"
                 />
