@@ -23,9 +23,12 @@ import { DeployResult } from "@/components/deploy-result";
 
 export function DeploySchema() {
   const schema = useSchemaStore((state) => state.schema);
-  const [supabaseLinkTables, setSupabaseLinkTables] = useState<
-    string | undefined
-  >(undefined);
+  const setSupabaseLinkTables = useSchemaStore(
+    (state) => state.setSupabaseLinkTables
+  );
+  const supabaseLinkTables = useSchemaStore(
+    (state) => state.supabaseLinkTables
+  );
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -58,6 +61,7 @@ export function DeploySchema() {
     const { error, message } = result;
     if (error) {
       toast.error(error);
+      setIsLoading(false);
       return;
     }
 

@@ -19,6 +19,9 @@ export default function Page(): JSX.Element {
   const [blobURL, setBlobURL] = useState<string | null>(null);
   const [finished, setFinished] = useState(false);
   const setSchema = useSchemaStore((state) => state.setSchema);
+  const setSupabaseLinkTables = useSchemaStore(
+    (state) => state.setSupabaseLinkTables
+  );
   const { complete, completion, isLoading } = useCompletion({
     api: "api/code-generation",
     onFinish: (_, completion) => {
@@ -39,6 +42,7 @@ export default function Page(): JSX.Element {
         success: () => {
           setFinished(true);
           setSchema(data);
+          setSupabaseLinkTables(undefined);
           return `Generation saved successfully.`;
         },
         error: "An error has ocurred while saving data.",
@@ -48,6 +52,7 @@ export default function Page(): JSX.Element {
       const error = JSON.parse(err.message);
       toast.error(error.message);
       setBlobURL(null);
+      setFinished(true);
     },
   });
 
