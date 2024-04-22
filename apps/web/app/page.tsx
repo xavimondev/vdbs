@@ -25,6 +25,10 @@ export default function Page(): JSX.Element {
   const { complete, completion, isLoading } = useCompletion({
     api: "api/code-generation",
     onFinish: (_, completion) => {
+      if (!completion) {
+        return;
+      }
+
       const sqlSchema = completion
         .split("--TABLE\n")
         .filter((table: string) => table !== "")
@@ -128,7 +132,7 @@ export default function Page(): JSX.Element {
     <>
       <div
         className={cn(
-          "rounded-md border-2 border-dashed text-gray-700 dark:text-gray-300 cursor-pointer transition-colors ease-in-out relative group select-none grow pointer-events-none [@media(hover:hover)]:pointer-events-auto",
+          "rounded-md border-2 border-dashed text-gray-700 dark:text-gray-300 cursor-pointer transition-colors ease-in-out bg-zinc-100 dark:bg-zinc-900 relative group select-none grow pointer-events-none [@media(hover:hover)]:pointer-events-auto",
           {
             "border-gray-500 hover:border-black dark:border-gray-600 dark:hover:border-gray-400":
               !isDraggingOver,
@@ -149,9 +153,9 @@ export default function Page(): JSX.Element {
 
         <div
           className={cn(
-            "rounded-md flex flex-col w-full h-full p-3 items-center justify-center text-center absolute bg-gray-100/70 dark:bg-neutral-900 text-lg",
+            "rounded-md flex flex-col w-full h-full p-3 items-center justify-center text-center absolute bg-zinc-100/70 dark:bg-zinc-900/70 text-lg",
             {
-              "opacity-0 group-hover:opacity-70 transition ease-in-out":
+              "opacity-0 group-hover:opacity-100 transition ease-in-out":
                 completion,
             }
           )}
