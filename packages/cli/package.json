@@ -1,6 +1,6 @@
 {
   "name": "vdbs",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Generate migrations from database diagrams",
   "license": "MIT",
   "keywords": [
