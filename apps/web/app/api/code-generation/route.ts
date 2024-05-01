@@ -4,6 +4,7 @@ import OpenAI from "openai";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
+import { TOTAL_GENERATIONS } from "@/constants";
 
 const openai = new OpenAI();
 
@@ -43,7 +44,7 @@ const ratelimit =
           url: process.env.UPSTASH_REDIS_REST_URL,
           token: process.env.UPSTASH_REDIS_REST_TOKEN,
         }),
-        limiter: Ratelimit.slidingWindow(2, "1440 m"), // 2 per day
+        limiter: Ratelimit.slidingWindow(TOTAL_GENERATIONS, "1440 m"), // 1 per day
         analytics: true,
       })
     : false;
