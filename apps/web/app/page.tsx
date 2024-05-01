@@ -62,16 +62,8 @@ export default function Page(): JSX.Element {
       });
     },
     onError: (err) => {
-      let alert = "";
-      if (typeof err === "string") {
-        const error = JSON.parse(err);
-        alert = error.message;
-      } else {
-        // @ts-ignore
-        alert = err.error;
-      }
-
-      toast.error(alert);
+      const result = JSON.parse(err.message);
+      toast.error(result.message);
 
       setBlobURL(null);
       setFinished(true);

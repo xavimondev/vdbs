@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         data: undefined,
-        error: "Missing API KEY – make sure to set it.",
+        message: "Missing API KEY – make sure to set it.",
       },
       { status: 400 }
     );
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         data: undefined,
-        error:
+        message:
           "Missing OPENAI_API_KEY – make sure to add it to your .env file.",
       },
       { status: 400 }
