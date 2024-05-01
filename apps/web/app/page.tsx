@@ -29,6 +29,15 @@ export default function Page(): JSX.Element {
         return;
       }
 
+      if (
+        completion.trim() === "Invalid SQL diagram." ||
+        !completion.includes("CREATE TABLE") ||
+        !completion.includes("--TABLE")
+      ) {
+        toast.error("This is not a valid SQL diagram. Please try again.");
+        return;
+      }
+
       const sqlSchema = completion
         .split("--TABLE\n")
         .filter((table: string) => table !== "")
