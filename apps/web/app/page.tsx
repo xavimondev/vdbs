@@ -11,7 +11,7 @@ import { useSchemaStore } from "@/store";
 import { saveGeneration } from "@/actions";
 import { Results } from "@/components/results";
 
-const LIMIT_MB = 4.5 * 1024 * 1024;
+const LIMIT_MB = 1.5 * 1024 * 1024;
 
 export default function Page(): JSX.Element {
   const [isDraggingOver, setIsDraggingOver] = useState(false);
@@ -70,14 +70,13 @@ export default function Page(): JSX.Element {
     }
 
     if (file.size > LIMIT_MB)
-      return toast.error("Image too large, maximum file size is 4.5MB.");
+      return toast.error("Image too large, maximum file size is 1MB.");
 
     const base64 = await toBase64(file);
 
-    // roughly 4.5MB in base64
-    if (base64.length > 6_464_471) {
-      return toast.error("Image too large, maximum file size is 4.5MB.");
-    }
+    // if (base64.length > 2_333_333) {
+    //   return toast.error("Image too large, maximum file size is 1MB.");
+    // }
 
     setBlobURL(URL.createObjectURL(file));
     setFinished(false);
