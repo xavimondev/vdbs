@@ -1,5 +1,11 @@
 # vdbs
 
+## 0.0.5
+
+### Patch Changes
+
+- patch supabase version cli
+
 ## 0.0.4
 
 ### Patch Changes

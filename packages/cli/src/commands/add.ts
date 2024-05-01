@@ -77,7 +77,7 @@ export const add = new Command()
         const spinner = ora(`Initializing Supabase project...`).start();
         // 1. Initialize supabase project
         const executeCommand = await listCommands(cwd);
-        await execa(executeCommand, ["supabase", "init"], {
+        await execa(executeCommand, ["supabase@1.162.4", "init"], {
           cwd: pickedPath === "supabase" ? cwd : pickedPath,
         });
         spinner.succeed();
