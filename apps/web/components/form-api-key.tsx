@@ -26,7 +26,14 @@ export function FormApiKey() {
 
   return (
     <div className="flex flex-col gap-2">
-      <form className="flex flex-col gap-2 w-full" action={formAction}>
+      <form
+        className="flex flex-col gap-2 w-full"
+        action={(formData) => {
+          const apiKey = formData.get("key") as string;
+          if (apiKey.trim().length === 0) return;
+          formAction(formData);
+        }}
+      >
         <div className="flex flex-col gap-2.5 text-center sm:text-left">
           <h2 className="text-lg font-semibold leading-none tracking-tight">
             API Key

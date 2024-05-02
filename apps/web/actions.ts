@@ -1,6 +1,7 @@
 "use server";
 
 import { Redis } from "@upstash/redis";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 export const saveGeneration = async (data: {
@@ -18,6 +19,7 @@ export const setApiKey = (prevState: any, formData: FormData) => {
   cookies().set("api-key", apiKey, {
     secure: true,
   });
+  revalidatePath("/");
   return { msg: "Key Saved Successfully" };
 };
 
