@@ -1,0 +1,8 @@
+dist
+node_modules
+.next
+build
+.vscode
+.turbo
+.DS_Store
+.github

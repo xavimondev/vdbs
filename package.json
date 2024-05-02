@@ -5,7 +5,7 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "prettier": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint:cli": "turbo lint --filter=vdbs",
     "build:cli": "turbo --filter=vdbs build",
     "dev:cli": "turbo --filter=vdbs dev",
