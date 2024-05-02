@@ -40,7 +40,7 @@ function TwitterIc(props: SVGProps<SVGSVGElement>) {
 
 export function Footer() {
   return (
-    <footer className="pt-4 lg:flex flex-row justify-between text-center dark:text-green-200 text-green-500">
+    <footer className="pt-4 flex flex-row justify-between text-center dark:text-green-200 text-green-500">
       <a
         href="https://twitter.com/xavimonp"
         aria-label="My twitter account"
