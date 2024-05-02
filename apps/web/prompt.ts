@@ -22,4 +22,4 @@ Add always the schema name "public" before the table's name.
 Ensure the generated SQL code accurately represents the visual schema for Supabase, including table relationships where present. 
 Important: Arrange table creation in the SQL script in a logical order to avoid reference errors. Tables that reference other tables should be created after the tables they reference.
 If you identify that the input does not contain valid SQL diagram information (e.g., lacks tables and relationships), return the message: "Invalid SQL diagram."
-Return the SQL code directly without adding any extra characters like backticks, explanations, or formatting.`;
+Return the SQL code directly without adding any extra characters like backticks, explanations, or formatting.`

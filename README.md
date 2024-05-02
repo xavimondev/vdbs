@@ -24,11 +24,11 @@ vdbs stands for **"vision database sql"** This project allows you to convert you
 
 2. Copy the npm command generated after your SQL schema is ready and paste it into your app. This creates a migration file containing the SQL schema.
 
-[![command demo](https://res.cloudinary.com/marcomontalbano/image/upload/v1713756126/video_to_markdown/images/video--9db6fb0d29e2e07d39d8ecc98c8a7518-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://res.cloudinary.com/xavimon/video/upload/v1713756082/vdbs/tzwaieulccqjtn6sq8u5.mp4 "command demo")
+[![command demo](https://res.cloudinary.com/marcomontalbano/image/upload/v1713756126/video_to_markdown/images/video--9db6fb0d29e2e07d39d8ecc98c8a7518-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://res.cloudinary.com/xavimon/video/upload/v1713756082/vdbs/tzwaieulccqjtn6sq8u5.mp4 'command demo')
 
 3. Use your database connection string, and the SQL schema will be deployed to your remote Supabase project.
 
-[![deploy demo](https://res.cloudinary.com/marcomontalbano/image/upload/v1713755928/video_to_markdown/images/video--f7104dd1f8f5624d627e730fc3a3af46-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://res.cloudinary.com/xavimon/video/upload/v1713754365/vdbs/yytclbkf7ottvfudjpxl.mp4 "deploy demo")
+[![deploy demo](https://res.cloudinary.com/marcomontalbano/image/upload/v1713755928/video_to_markdown/images/video--f7104dd1f8f5624d627e730fc3a3af46-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://res.cloudinary.com/xavimon/video/upload/v1713754365/vdbs/yytclbkf7ottvfudjpxl.mp4 'deploy demo')
 
 vdbs is inspired by [v0.dev from Vercel](https://v0.dev/), which allows you to generate UI based on images or your ideas. You can copy the code or use the npm command and integrate the generated code into your project.
 

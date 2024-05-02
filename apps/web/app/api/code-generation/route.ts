@@ -1,15 +1,15 @@
-import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import OpenAI from "openai";
-import { OpenAIStream, StreamingTextResponse } from "ai";
+import { NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
+import OpenAI from 'openai'
+import { OpenAIStream, StreamingTextResponse } from 'ai'
 // import { Ratelimit } from "@upstash/ratelimit";
 // import { Redis } from "@upstash/redis";
 // import { TOTAL_GENERATIONS } from "@/constants";
-import { PROMPT } from "@/prompt";
+import { PROMPT } from '@/prompt'
 
-const openai = new OpenAI();
+const openai = new OpenAI()
 
-export const runtime = "edge";
+export const runtime = 'edge'
 
 // const ratelimit =
 //   process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
@@ -24,35 +24,34 @@ export const runtime = "edge";
 //     : false;
 
 export async function POST(req: Request) {
-  const customApiKey = cookies().get("api-key")?.value;
+  const customApiKey = cookies().get('api-key')?.value
 
-  if (process.env.NODE_ENV === "production" && !customApiKey) {
+  if (process.env.NODE_ENV === 'production' && !customApiKey) {
     return NextResponse.json(
       {
         data: undefined,
-        message: "Missing API KEY – make sure to set it.",
+        message: 'Missing API KEY – make sure to set it.'
       },
       { status: 400 }
-    );
+    )
   }
 
   if (
-    process.env.NODE_ENV === "development" &&
-    (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === "")
+    process.env.NODE_ENV === 'development' &&
+    (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === '')
   ) {
     return NextResponse.json(
       {
         data: undefined,
-        message:
-          "Missing OPENAI_API_KEY – make sure to add it to your .env file.",
+        message: 'Missing OPENAI_API_KEY – make sure to add it to your .env file.'
       },
       { status: 400 }
-    );
+    )
   }
 
   if (customApiKey) {
     // Set user's api key
-    openai.apiKey = customApiKey as string;
+    openai.apiKey = customApiKey as string
   }
 
   // const hasCustomApiKey = customApiKey && customApiKey.trim().length > 0;
@@ -76,51 +75,46 @@ export async function POST(req: Request) {
   //   }
   // }
 
-  const { prompt: base64 } = await req.json();
+  const { prompt: base64 } = await req.json()
 
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-4-turbo",
+      model: 'gpt-4-turbo',
       stream: true,
       max_tokens: 4096,
       temperature: 0.2,
       messages: [
         {
-          role: "user",
+          role: 'user',
           content: [
             {
-              type: "text",
-              text: PROMPT,
+              type: 'text',
+              text: PROMPT
             },
             {
-              type: "image_url",
+              type: 'image_url',
               image_url: {
-                url: base64,
-              },
-            },
-          ],
-        },
-      ],
-    });
+                url: base64
+              }
+            }
+          ]
+        }
+      ]
+    })
 
-    const stream = OpenAIStream(response);
-    return new StreamingTextResponse(stream);
+    const stream = OpenAIStream(response)
+    return new StreamingTextResponse(stream)
   } catch (error) {
     if (error instanceof OpenAI.APIError) {
-      let errorMessage =
-        "An error has ocurred with API Completions. Please try again.";
-      if (error.code === "invalid_api_key") {
-        errorMessage =
-          "The provided API Key is invalid. Please enter a valid API Key.";
+      let errorMessage = 'An error has ocurred with API Completions. Please try again.'
+      if (error.code === 'invalid_api_key') {
+        errorMessage = 'The provided API Key is invalid. Please enter a valid API Key.'
       }
 
-      const { name, status, headers } = error;
-      return NextResponse.json(
-        { name, status, headers, message: errorMessage },
-        { status }
-      );
+      const { name, status, headers } = error
+      return NextResponse.json({ name, status, headers, message: errorMessage }, { status })
     } else {
-      throw error;
+      throw error
     }
   }
 }

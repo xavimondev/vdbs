@@ -1,122 +1,122 @@
-"use client";
-import { useEffect } from "react";
-import dynamic from "next/dynamic";
-import { useMonaco } from "@monaco-editor/react";
-import { LoaderIcon } from "lucide-react";
+'use client'
+import { useEffect } from 'react'
+import dynamic from 'next/dynamic'
+import { useMonaco } from '@monaco-editor/react'
+import { LoaderIcon } from 'lucide-react'
 
-const Monaco = dynamic(() => import("@monaco-editor/react"), { ssr: false });
+const Monaco = dynamic(() => import('@monaco-editor/react'), { ssr: false })
 
 type CodeEditorProps = {
-  code: string;
-};
+  code: string
+}
 
 export function CodeEditor({ code }: CodeEditorProps) {
-  const monaco = useMonaco();
+  const monaco = useMonaco()
 
   useEffect(() => {
-    if (!monaco) return;
+    if (!monaco) return
     // https://github.com/brijeshb42/monaco-themes/tree/master/src
-    monaco.editor.defineTheme("vs-dark", {
-      base: "vs-dark",
+    monaco.editor.defineTheme('vs-dark', {
+      base: 'vs-dark',
       inherit: true,
       rules: [
         {
-          background: "141414",
-          token: "",
+          background: '141414',
+          token: ''
         },
         {
-          foreground: "5f5a60",
-          fontStyle: "italic",
-          token: "comment",
+          foreground: '5f5a60',
+          fontStyle: 'italic',
+          token: 'comment'
         },
         {
-          foreground: "cf6a4c",
-          token: "constant",
+          foreground: 'cf6a4c',
+          token: 'constant'
         },
         {
-          foreground: "9b703f",
-          token: "entity",
+          foreground: '9b703f',
+          token: 'entity'
         },
         {
-          foreground: "cda869",
-          token: "keyword",
+          foreground: 'cda869',
+          token: 'keyword'
         },
         {
-          foreground: "f9ee98",
-          token: "storage",
+          foreground: 'f9ee98',
+          token: 'storage'
         },
         {
-          foreground: "8f9d6a",
-          token: "string",
+          foreground: '8f9d6a',
+          token: 'string'
         },
         {
-          foreground: "9b859d",
-          token: "support",
+          foreground: '9b859d',
+          token: 'support'
         },
         {
-          foreground: "7587a6",
-          token: "variable",
+          foreground: '7587a6',
+          token: 'variable'
         },
         {
-          foreground: "daefa3",
-          token: "string source",
+          foreground: 'daefa3',
+          token: 'string source'
         },
         {
-          foreground: "ddf2a4",
-          token: "string constant",
+          foreground: 'ddf2a4',
+          token: 'string constant'
         },
         {
-          foreground: "e9c062",
-          token: "string.regexp",
-        },
+          foreground: 'e9c062',
+          token: 'string.regexp'
+        }
       ],
       colors: {
-        "editor.foreground": "#F8F8F8",
-        "editor.background": "#111010",
-        "editor.selectionBackground": "#DDF0FF33",
-        "editor.lineHighlightBackground": "#FFFFFF08",
-        "editorCursor.foreground": "#A7A7A7",
-        "editorWhitespace.foreground": "#FFFFFF40",
-      },
-    });
-  }, [monaco]);
+        'editor.foreground': '#F8F8F8',
+        'editor.background': '#111010',
+        'editor.selectionBackground': '#DDF0FF33',
+        'editor.lineHighlightBackground': '#FFFFFF08',
+        'editorCursor.foreground': '#A7A7A7',
+        'editorWhitespace.foreground': '#FFFFFF40'
+      }
+    })
+  }, [monaco])
 
   useEffect(() => {
-    if (!monaco) return;
-    monaco.editor.getModels()[0]?.setValue(code || "");
-  }, [code]);
+    if (!monaco) return
+    monaco.editor.getModels()[0]?.setValue(code || '')
+  }, [code])
 
   return (
     <Monaco
-      height="100%"
-      theme="vs-dark"
+      height='100%'
+      theme='vs-dark'
       value={code}
-      className="lg:h-[calc(100vh-233px)]"
+      className='lg:h-[calc(100vh-233px)]'
       loading={
-        <div className="flex items-center justify-center">
+        <div className='flex items-center justify-center'>
           <LoaderIcon />
         </div>
       }
       options={{
         readOnly: false,
         padding: {
-          top: 20,
+          top: 20
         },
-        cursorSmoothCaretAnimation: "on",
-        language: "sql",
-        cursorBlinking: "smooth",
+        cursorSmoothCaretAnimation: 'on',
+        language: 'sql',
+        cursorBlinking: 'smooth',
         fontSize: 16,
         formatOnType: true,
         formatOnPaste: true,
         automaticLayout: true,
-        wordWrap: "wordWrapColumn",
+        wordWrap: 'wordWrapColumn',
         wordWrapColumn: 80,
         minimap: {
-          enabled: false,
+          enabled: false
         },
-        tabSize: 2,
+        tabSize: 2
       }}
-      defaultLanguage="sql"
+      defaultLanguage='sql'
     />
-  );
+  )
 }
