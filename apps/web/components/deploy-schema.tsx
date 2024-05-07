@@ -109,7 +109,7 @@ export function DeploySchema() {
                 The credentials you provide are used exclusively for validating your database
                 connection. You can examine the{' '}
                 <Link
-                  href='https://github.com/xavimon/supamigration'
+                  href='https://github.com/xavimon/vdbs'
                   target='_blank'
                   rel='noopener noreferrer'
                   className='font-medium underline'
