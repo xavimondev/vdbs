@@ -3,11 +3,14 @@
 import { Redis } from '@upstash/redis'
 import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
+import { TTL_SECONDS } from '@/constants'
 
 export const saveGeneration = async (data: { sqlSchema: string; cmdCode: string }) => {
   const { cmdCode, sqlSchema } = data
   const redis = Redis.fromEnv()
   const res = await redis.set(cmdCode, sqlSchema)
+  await redis.expire(cmdCode, TTL_SECONDS)
+
   return res
 }
 

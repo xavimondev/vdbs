@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Loader2, TableRowsSplit } from 'lucide-react'
 import { toast } from 'sonner'
-import { useCompletion } from 'ai/react'
+import { useCompletion } from '@ai-sdk/react'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { isSupportedImageType, nanoid, toBase64 } from '@/utils'

@@ -1,13 +1,11 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
-import OpenAI from 'openai'
-import { OpenAIStream, StreamingTextResponse } from 'ai'
+import { streamText } from 'ai'
+import { createOpenAI } from '@ai-sdk/openai'
+import { PROMPT } from '@/prompt'
 // import { Ratelimit } from "@upstash/ratelimit";
 // import { Redis } from "@upstash/redis";
 // import { TOTAL_GENERATIONS } from "@/constants";
-import { PROMPT } from '@/prompt'
-
-const openai = new OpenAI()
 
 export const runtime = 'edge'
 
@@ -24,7 +22,7 @@ export const runtime = 'edge'
 //     : false;
 
 export async function POST(req: Request) {
-  const customApiKey = cookies().get('api-key')?.value
+  let customApiKey = cookies().get('api-key')?.value
 
   if (process.env.NODE_ENV === 'production' && !customApiKey) {
     return NextResponse.json(
@@ -49,9 +47,8 @@ export async function POST(req: Request) {
     )
   }
 
-  if (customApiKey) {
-    // Set user's api key
-    openai.apiKey = customApiKey as string
+  if (process.env.NODE_ENV === 'development') {
+    customApiKey = process.env.OPENAI_API_KEY
   }
 
   // const hasCustomApiKey = customApiKey && customApiKey.trim().length > 0;
@@ -75,14 +72,16 @@ export async function POST(req: Request) {
   //   }
   // }
 
+  const openai = createOpenAI({
+    apiKey: customApiKey,
+    compatibility: 'strict'
+  })
+
   const { prompt: base64 } = await req.json()
 
   try {
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4-turbo',
-      stream: true,
-      max_tokens: 4096,
-      temperature: 0.2,
+    const result = await streamText({
+      model: openai('gpt-4o'),
       messages: [
         {
           role: 'user',
@@ -92,29 +91,25 @@ export async function POST(req: Request) {
               text: PROMPT
             },
             {
-              type: 'image_url',
-              image_url: {
-                url: base64
-              }
+              type: 'image',
+              image: base64
             }
           ]
         }
-      ]
+      ],
+      maxTokens: 4096,
+      temperature: 0.2
     })
 
-    const stream = OpenAIStream(response)
-    return new StreamingTextResponse(stream)
+    return result.toAIStreamResponse()
   } catch (error) {
-    if (error instanceof OpenAI.APIError) {
-      let errorMessage = 'An error has ocurred with API Completions. Please try again.'
-      if (error.code === 'invalid_api_key') {
-        errorMessage = 'The provided API Key is invalid. Please enter a valid API Key.'
-      }
-
-      const { name, status, headers } = error
-      return NextResponse.json({ name, status, headers, message: errorMessage }, { status })
-    } else {
-      throw error
+    let errorMessage = 'An error has ocurred with API Completions. Please try again.'
+    // @ts-ignore
+    if (error.status === 401) {
+      errorMessage = 'The provided API Key is invalid. Please enter a valid API Key.'
     }
+    // @ts-ignore
+    const { name, status, headers } = error
+    return NextResponse.json({ name, status, headers, message: errorMessage }, { status })
   }
 }
