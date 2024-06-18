@@ -3,23 +3,8 @@ import { cookies } from 'next/headers'
 import { streamText } from 'ai'
 import { createOpenAI } from '@ai-sdk/openai'
 import { PROMPT } from '@/prompt'
-// import { Ratelimit } from "@upstash/ratelimit";
-// import { Redis } from "@upstash/redis";
-// import { TOTAL_GENERATIONS } from "@/constants";
 
 export const runtime = 'edge'
-
-// const ratelimit =
-//   process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
-//     ? new Ratelimit({
-//         redis: new Redis({
-//           url: process.env.UPSTASH_REDIS_REST_URL,
-//           token: process.env.UPSTASH_REDIS_REST_TOKEN,
-//         }),
-//         limiter: Ratelimit.slidingWindow(TOTAL_GENERATIONS, "1440 m"), // 1 per day
-//         analytics: true,
-//       })
-//     : false;
 
 export async function POST(req: Request) {
   let customApiKey = cookies().get('api-key')?.value
@@ -50,27 +35,6 @@ export async function POST(req: Request) {
   if (process.env.NODE_ENV === 'development') {
     customApiKey = process.env.OPENAI_API_KEY
   }
-
-  // const hasCustomApiKey = customApiKey && customApiKey.trim().length > 0;
-
-  // if (ratelimit) {
-  //   const ip = req.headers.get("x-real-ip") ?? "local";
-
-  //   const { success, limit, reset, remaining } = await ratelimit.limit(ip);
-  //   if (!success) {
-  //     return NextResponse.json(
-  //       { message: "You have reached your request limit for the day." },
-  //       {
-  //         status: 429,
-  //         headers: {
-  //           "X-RateLimit-Limit": limit.toString(),
-  //           "X-RateLimit-Remaining": remaining.toString(),
-  //           "X-RateLimit-Reset": reset.toString(),
-  //         },
-  //       }
-  //     );
-  //   }
-  // }
 
   const openai = createOpenAI({
     apiKey: customApiKey,
@@ -103,13 +67,22 @@ export async function POST(req: Request) {
 
     return result.toAIStreamResponse()
   } catch (error) {
+    // console.log(Object.keys(error))
+    // @ts-ignore
+    const statusCode = error?.lastError?.statusCode ?? error.statusCode
     let errorMessage = 'An error has ocurred with API Completions. Please try again.'
-    // @ts-ignore
-    if (error.status === 401) {
+
+    if (statusCode === 401) {
       errorMessage = 'The provided API Key is invalid. Please enter a valid API Key.'
+    } else if (statusCode === 429) {
+      errorMessage = 'You exceeded your current quota, please check your plan and billing details.'
     }
-    // @ts-ignore
-    const { name, status, headers } = error
-    return NextResponse.json({ name, status, headers, message: errorMessage }, { status })
+
+    return NextResponse.json(
+      {
+        message: errorMessage
+      },
+      { status: statusCode }
+    )
   }
 }
