@@ -1,3 +1,12 @@
+<div align="center">
+  <a href="https://x.com/xavimonp/status/1785862861836709980" target="_blank">
+    <img src='https://vdbs.vercel.app/medal.png' width="20%" alt="Medal image" />
+  </a>
+  <p style="font-size:16px"> Supabase Open Source Hackathon 2024 Winner 🤩</p>
+</div>
+
+See more context: [here](https://x.com/xavimonp/status/1785862861836709980)
+
 ## Table of Contents
 
 - [Introduction](#introduction)
@@ -27,8 +36,6 @@ vdbs stands for **"vision database sql"** This project allows you to convert you
 3. Use your database connection string, and the SQL schema will be deployed to your remote Supabase project.
 
 vdbs is inspired by [v0.dev from Vercel](https://v0.dev/), which allows you to generate UI based on images or your ideas. You can copy the code or use the npm command and integrate the generated code into your project.
-
-See more context [here](https://x.com/xavimonp/status/1785862861836709980)
 
 ## Requirements
 
