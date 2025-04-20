@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { Loader2, TableRowsSplit } from 'lucide-react'
+import { Loader2, TableRowsSplit, UploadIcon } from 'lucide-react'
 import { toast } from 'sonner'
 import { useCompletion } from '@ai-sdk/react'
 import Image from 'next/image'
@@ -13,7 +13,7 @@ import { Results } from '@/components/results'
 
 const LIMIT_MB = 1.5 * 1024 * 1024
 
-export default function Page(): JSX.Element {
+export default function Page() {
   const [isDraggingOver, setIsDraggingOver] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const [blobURL, setBlobURL] = useState<string | null>(null)
@@ -167,12 +167,15 @@ export default function Page(): JSX.Element {
             <Loader2 className='animate-spin size-12' />
           ) : (
             <>
-              <TableRowsSplit className='size-20 xl:size-28' />
-              <p className='font-bold mb-1 sm:mb-4 text-xl sm:text-3xl 2xl:text-5xl mt-3'>
-                DB Image to SQL Schema
+              <div className='rounded-full bg-primary/10 p-4'>
+                {/* <Upload className='h-8 w-8 text-primary' /> */}
+                <UploadIcon className='size-10 text-primary' />
+              </div>
+              <p className='font-semibold mb-1 sm:mb-4 text-xl mt-3'>
+                Drop or paste anywhere, or click to upload
               </p>
-              <p className='hidden [@media(hover:hover)]:block'>
-                Drop or paste anywhere, or click to upload.
+              <p className='hidden [@media(hover:hover)]:block text-sm text-muted-foreground'>
+                Supports PNG, JPEG, and JPG (max 2MB)
               </p>
               <div className='w-56 space-y-4 [@media(hover:hover)]:hidden pointer-events-auto'>
                 <button className='rounded-full w-full py-3 bg-black dark:bg-white text-white dark:text-black'>
@@ -194,7 +197,7 @@ export default function Page(): JSX.Element {
           className='hidden'
           ref={inputRef}
           onChange={handleInputChange}
-          accept='image/jpeg, image/png, image/gif, image/webp'
+          accept='image/jpeg, image/png, image/webp'
         />
       </div>
       {(isLoading || completion) && (
