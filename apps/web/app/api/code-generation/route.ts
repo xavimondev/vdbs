@@ -1,24 +1,11 @@
 import { NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
 import { streamText } from 'ai'
-import { createOpenAI } from '@ai-sdk/openai'
-import { PROMPT } from '@/prompt'
+import { openai } from '@ai-sdk/openai'
+import { PG_PROMPT } from '@/prompt'
 
 export const runtime = 'edge'
 
 export async function POST(req: Request) {
-  let customApiKey = cookies().get('api-key')?.value
-
-  if (process.env.NODE_ENV === 'production' && !customApiKey) {
-    return NextResponse.json(
-      {
-        data: undefined,
-        message: 'Missing API KEY – make sure to set it.'
-      },
-      { status: 400 }
-    )
-  }
-
   if (
     process.env.NODE_ENV === 'development' &&
     (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === '')
@@ -32,27 +19,18 @@ export async function POST(req: Request) {
     )
   }
 
-  if (process.env.NODE_ENV === 'development') {
-    customApiKey = process.env.OPENAI_API_KEY
-  }
-
-  const openai = createOpenAI({
-    apiKey: customApiKey,
-    compatibility: 'strict'
-  })
-
   const { prompt: base64 } = await req.json()
 
   try {
-    const result = await streamText({
-      model: openai('gpt-4o'),
+    const result = streamText({
+      model: openai('gpt-4.1-mini'),
       messages: [
         {
           role: 'user',
           content: [
             {
               type: 'text',
-              text: PROMPT
+              text: PG_PROMPT
             },
             {
               type: 'image',
@@ -61,13 +39,12 @@ export async function POST(req: Request) {
           ]
         }
       ],
-      maxTokens: 4096,
+      // maxTokens: 4096,
       temperature: 0.2
     })
 
-    return result.toAIStreamResponse()
+    return result.toDataStreamResponse()
   } catch (error) {
-    // console.log(Object.keys(error))
     // @ts-ignore
     const statusCode = error?.lastError?.statusCode ?? error.statusCode
     let errorMessage = 'An error has ocurred with API Completions. Please try again.'

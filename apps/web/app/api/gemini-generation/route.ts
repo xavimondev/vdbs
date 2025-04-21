@@ -1,9 +1,7 @@
 import { NextResponse } from 'next/server'
-import { StreamingTextResponse, streamText } from 'ai'
+import { streamText } from 'ai'
 import { google } from '@ai-sdk/google'
-import { PROMPT } from '@/prompt'
-
-export const runtime = 'edge'
+import { PG_PROMPT } from '@/prompt'
 
 export async function POST(req: Request) {
   if (process.env.NODE_ENV === 'development' && !process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
@@ -19,15 +17,15 @@ export async function POST(req: Request) {
   const { prompt: base64 } = await req.json()
 
   try {
-    const result = await streamText({
-      model: google('models/gemini-1.5-flash-latest'),
+    const result = streamText({
+      model: google('gemini-2.0-flash'),
       messages: [
         {
           role: 'user',
           content: [
             {
               type: 'text',
-              text: PROMPT
+              text: PG_PROMPT
             },
             {
               type: 'image',
@@ -36,11 +34,11 @@ export async function POST(req: Request) {
           ]
         }
       ],
-      maxTokens: 1024,
+      // maxTokens: 1024,
       temperature: 0.2
     })
 
-    return new StreamingTextResponse(result.toAIStream())
+    return result.toDataStreamResponse()
   } catch (error) {
     let errorMessage = 'An error has ocurred with API Completions. Please try again.'
     // @ts-ignore

@@ -1,17 +1,17 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { Loader2, TableRowsSplit, UploadIcon } from 'lucide-react'
+import { Loader2, UploadIcon } from 'lucide-react'
 import { toast } from 'sonner'
 import { useCompletion } from '@ai-sdk/react'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
-import { isSupportedImageType, nanoid, toBase64 } from '@/utils'
+import { extractTableNames, isSupportedImageType, nanoid, toBase64 } from '@/utils'
 import { useSchemaStore } from '@/store'
 import { saveGeneration } from '@/actions'
 import { Results } from '@/components/results'
 
-const LIMIT_MB = 1.5 * 1024 * 1024
+const LIMIT_MB = 2 * 1024 * 1024
 
 export default function Page() {
   const [isDraggingOver, setIsDraggingOver] = useState(false)
@@ -21,7 +21,7 @@ export default function Page() {
   const setSchema = useSchemaStore((state) => state.setSchema)
   const setSupabaseLinkTables = useSchemaStore((state) => state.setSupabaseLinkTables)
   const { complete, completion, isLoading } = useCompletion({
-    api: 'api/code-generation',
+    api: 'api/gemini-generation',
     onFinish: (_, completion) => {
       if (!completion) {
         return
@@ -36,28 +36,39 @@ export default function Page() {
         return
       }
 
-      const sqlSchema = completion
-        .split('--TABLE\n')
-        .filter((table: string) => table !== '')
-        .join('\n')
-        .trim()
+      // const sqlSchema = completion
+      //   .split('--TABLE\n')
+      //   .filter((table: string) => table !== '')
+      //   .join('\n')
+      //   .trim()
+
+      const tables = extractTableNames(completion)
+      const hasUndefined = tables.some((tbl) => tbl === undefined)
+      if (hasUndefined) {
+        toast.error('An error has ocurred while extracting tables')
+        return
+      }
+      console.log(tables)
 
       const data = {
-        sqlSchema,
-        cmdCode: nanoid()
+        sqlSchema: completion,
+        tables: tables as string[]
       }
 
+      setFinished(true)
+      setSchema(data)
+      setSupabaseLinkTables(undefined)
       // Saving in db the generation
-      toast.promise(saveGeneration(data), {
-        loading: 'Saving Generation...',
-        success: () => {
-          setFinished(true)
-          setSchema(data)
-          setSupabaseLinkTables(undefined)
-          return `Generation saved successfully.`
-        },
-        error: 'An error has ocurred while saving data.'
-      })
+      // toast.promise(saveGeneration(data), {
+      //   loading: 'Saving Generation...',
+      //   success: () => {
+      //     setFinished(true)
+      //     setSchema(data)
+      //     setSupabaseLinkTables(undefined)
+      //     return `Generation saved successfully.`
+      //   },
+      //   error: 'An error has ocurred while saving data.'
+      // })
     },
     onError: (err) => {
       const result = JSON.parse(err.message)
@@ -72,16 +83,12 @@ export default function Page() {
     if (!file) return
 
     if (!isSupportedImageType(file.type)) {
-      return toast.error('Unsupported format. Only JPEG, PNG, GIF, and WEBP files are supported.')
+      return toast.error('Unsupported format. Only JPEG, PNG, and WEBP files are supported.')
     }
 
     if (file.size > LIMIT_MB) return toast.error('Image too large, maximum file size is 1MB.')
 
     const base64 = await toBase64(file)
-
-    // if (base64.length > 2_333_333) {
-    //   return toast.error("Image too large, maximum file size is 1MB.");
-    // }
 
     setBlobURL(URL.createObjectURL(file))
     setFinished(false)

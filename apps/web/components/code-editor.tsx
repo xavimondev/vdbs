@@ -91,20 +91,20 @@ export function CodeEditor({ code }: CodeEditorProps) {
       height='100%'
       theme='vs-dark'
       value={code}
-      className='lg:h-[calc(100vh-233px)]'
+      className='lg:h-[582px]'
       loading={
         <div className='flex items-center justify-center'>
           <LoaderIcon />
         </div>
       }
       options={{
-        readOnly: false,
+        readOnly: true,
         padding: {
           top: 20
         },
-        cursorSmoothCaretAnimation: 'on',
+        cursorSmoothCaretAnimation: 'off',
         language: 'sql',
-        cursorBlinking: 'smooth',
+        cursorBlinking: 'solid',
         fontSize: 16,
         formatOnType: true,
         formatOnPaste: true,

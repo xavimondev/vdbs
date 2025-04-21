@@ -2,7 +2,7 @@ import { create } from 'zustand'
 
 type SchemaData = {
   sqlSchema: string
-  cmdCode: string
+  tables: string[]
 }
 
 type SchemaState = {

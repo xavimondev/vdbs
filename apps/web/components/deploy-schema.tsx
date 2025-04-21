@@ -87,7 +87,7 @@ export function DeploySchema() {
                   placeholder='postgres://postgres.[referenceId]:[YOUR-PASSWORD]@[cloud]-0-[region].pooler.supabase.com:5432/postgres'
                 />
               </div>
-              <p className='text-[13px] text-foreground/75'>
+              {/* <p className='text-[13px] text-foreground/75'>
                 You can find your Supabase database connection URL in your{' '}
                 <Link
                   href='https://supabase.com/dashboard/project/_/settings/database'
@@ -98,7 +98,7 @@ export function DeploySchema() {
                   database settings
                 </Link>{' '}
                 in the Supabase dashboard.
-              </p>
+              </p> */}
             </div>
             <Alert variant='destructive' className='bg-destructive/20'>
               <CircleAlert className='size-5 text-red-500/90' />
