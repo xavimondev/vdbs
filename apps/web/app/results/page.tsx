@@ -1,9 +1,9 @@
+import { UploadIcon } from 'lucide-react'
+import Link from 'next/link'
 import { Header } from '@/components/header'
 import { OptionsResults } from '@/components/options-results'
 import { SchemaResults } from '@/components/schema-results'
 import { Button } from '@/components/ui/button'
-import { UploadIcon } from 'lucide-react'
-import Link from 'next/link'
 
 export default function Results() {
   return (

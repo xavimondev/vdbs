@@ -11,7 +11,7 @@ export function OptionsResults() {
     <div className='flex flex-col gap-4'>
       <Card className='border shadow-sm p-5'>
         <h2 className='text-base font-medium mb-4'>Database Schema Information</h2>
-        <div className='space-y-2'>
+        <div className='space-y-2 h-[247px] overflow-scroll'>
           {tables && (
             <div className='flex flex-col gap-4'>
               <h3 className='text-sm font-medium uppercase text-muted-foreground'>

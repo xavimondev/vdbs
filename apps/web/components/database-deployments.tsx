@@ -11,6 +11,7 @@ import {
   CardContent,
   CardFooter
 } from '@/components/ui/card'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 const providers = [
   {
@@ -86,7 +87,7 @@ export function DatabaseDeployments({ onConnect }: DatabaseConnectionProps) {
   }
 
   return (
-    <Card>
+    <Card className='size-full'>
       <CardHeader>
         <CardTitle>Deploy Schema</CardTitle>
         <CardDescription hidden>Choose a database provider to deploy your schema.</CardDescription>
@@ -133,15 +134,16 @@ export function DatabaseDeployments({ onConnect }: DatabaseConnectionProps) {
                 placeholder={getPlaceholder()}
               />
             </div>
-            <div className='bg-destructive/20 border-l-4 border-destructive p-4'>
-              <div className='flex'>
-                <AlertCircleIcon className='size-5 text-red-500/90 shrink-0' />
-                <p className='ml-3 text-sm text-red-500/90'>
-                  We never store your database credentials. They are used exclusively for this
-                  connection.
-                </p>
-              </div>
-            </div>
+            <Alert variant='destructive' className='bg-destructive/20'>
+              <AlertCircleIcon className='size-5 text-red-500/90' />
+              <AlertTitle hidden className='font-medium text-red-500/90'>
+                We never store your database credentials
+              </AlertTitle>
+              <AlertDescription className='text-red-500/90 text-sm'>
+                We never store your database credentials. They are used exclusively for this
+                connection.
+              </AlertDescription>
+            </Alert>
           </>
         )}
       </CardContent>

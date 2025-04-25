@@ -1,21 +1,22 @@
 'use client'
+import { useState } from 'react'
+import { toast } from 'sonner'
+import { CheckIcon, CopyIcon, DownloadIcon } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { CodeEditor } from '@/components/code-editor'
-import { CheckIcon, CopyIcon, DownloadIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { useState } from 'react'
 import { useSchemaStore } from '@/store'
-import { toast } from 'sonner'
+import { copyToClipboard } from '@/utils'
 
 export function SchemaResults() {
   const [copied, setCopied] = useState(false)
   const schema = useSchemaStore((store) => store.schema)
   const { sqlSchema } = schema ?? {}
 
-  const handleCopy = () => {
+  const handleCopy = async () => {
     if (!sqlSchema) return
 
-    navigator.clipboard.writeText(sqlSchema)
+    await copyToClipboard(sqlSchema)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
     toast.info('SQL has been copied to your clipboard')
