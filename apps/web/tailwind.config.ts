@@ -70,12 +70,23 @@ const config = {
         'fade-slide': {
           '0%': { opacity: '0', transform: 'translateY(20px)' },
           '100%': { opacity: '1' }
+        },
+        blink: {
+          '0%, 100%': {
+            'box-shadow': 'inset 0 0 150px rgba(34, 197, 95, 0.3)',
+            'border-color': 'rgba(34, 197, 95, 0.4)'
+          },
+          '50%': {
+            'box-shadow': 'inset 0 0 180px rgba(34, 197, 95, 0.7)',
+            'border-color': 'rgba(34, 197, 95, 1)'
+          }
         }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        'fade-slide': 'fade-slide 0.3s forwards'
+        'fade-slide': 'fade-slide 0.3s forwards',
+        blink: 'blink 3s infinite'
       }
     }
   },

@@ -1,7 +1,5 @@
 'use client'
 
-import type React from 'react'
-
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
@@ -15,7 +13,6 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
-import { DeploySchema } from './deploy-schema'
 
 interface DeployModalProps {
   open: boolean
@@ -49,10 +46,7 @@ export function DeployDialog({ open, onClose, sqlFormat, sqlCode }: DeployModalP
       <DialogContent className='sm:max-w-[500px]'>
         <DialogHeader>
           <DialogTitle>Deploy to Database Server</DialogTitle>
-          <DialogDescription>
-            Enter your {sqlFormat === 'mysql' ? 'MySQL' : 'PostgreSQL'} server details to deploy the
-            schema.
-          </DialogDescription>
+          <DialogDescription>Enter your database details to deploy the schema.</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className='space-y-4 py-4'>
           <div className='grid grid-cols-2 gap-4'>

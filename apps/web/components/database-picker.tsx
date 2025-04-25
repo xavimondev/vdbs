@@ -11,6 +11,7 @@ import {
   CommandItem,
   CommandList
 } from '@/components/ui/command'
+import { Dispatch, SetStateAction, useState } from 'react'
 
 const schemas = [
   {
@@ -27,35 +28,20 @@ const schemas = [
   }
 ]
 
-type DatabaseItemProps = {
-  title: string
-  Icon: any
-  isSelected: boolean
-  handleSelectItem: (itemSelected: string) => void
+type DatabasePickerProps = {
+  databaseFormat: string | null
+  setDatabaseFormat: Dispatch<SetStateAction<string | null>>
 }
 
-// function DatabaseItem({ title, Icon, isSelected, handleSelectItem }: DatabaseItemProps) {
-//   return (
-//     <div
-//       className={cn(
-//         'flex flex-col items-center gap-2 border hover:bg-gray-100 p-3 rounded-md transition-colors duration-200 cursor-pointer',
-//         isSelected ? 'border-neutral-500' : 'border-neutral-300'
-//       )}
-//       onClick={() => handleSelectItem(title)}
-//     >
-//       <Icon className='size-10' />
-//       <span>{title}</span>
-//     </div>
-//   )
-// }
+export function DatabasePicker({ databaseFormat, setDatabaseFormat }: DatabasePickerProps) {
+  const [open, setOpen] = useState(false)
 
-export function DatabasePicker() {
-  // const [itemSelected, setItemSelected] = useState<string | null>(null)
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant='outline' className='ml-auto'>
-          Select Database Schema <ChevronDownIcon className='text-muted-foreground' />
+          {!databaseFormat ? 'Select Database Schema' : databaseFormat}{' '}
+          <ChevronDownIcon className='text-muted-foreground' />
         </Button>
       </PopoverTrigger>
       <PopoverContent className='p-0' align='end'>
@@ -65,7 +51,15 @@ export function DatabasePicker() {
             <CommandEmpty>No roles found.</CommandEmpty>
             <CommandGroup>
               {schemas.map(({ id, title, description, Icon }) => (
-                <CommandItem key={id} className='flex items-center gap-2.5 px-3 py-2'>
+                <CommandItem
+                  key={id}
+                  className='flex items-center gap-2.5 px-3 py-2'
+                  value={id}
+                  onSelect={(value) => {
+                    setDatabaseFormat(value)
+                    setOpen(false)
+                  }}
+                >
                   {Icon}
                   <div className='flex flex-col items-start'>
                     <p>{title}</p>

@@ -1,7 +1,20 @@
 import { NextResponse } from 'next/server'
-import { streamText } from 'ai'
+import { generateObject } from 'ai'
 import { google } from '@ai-sdk/google'
-import { PG_PROMPT } from '@/prompt'
+import { MYSQL_PROMPT, PG_PROMPT } from '@/prompt'
+import { z } from 'zod'
+
+const DB_SCHEMA = z.object({
+  results: z.object({
+    sqlSchema: z.string(),
+    tables: z.array(
+      z.object({
+        name: z.string(),
+        numberOfColumns: z.number()
+      })
+    )
+  })
+})
 
 export async function POST(req: Request) {
   if (process.env.NODE_ENV === 'development' && !process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
@@ -14,18 +27,19 @@ export async function POST(req: Request) {
     )
   }
 
-  const { prompt: base64 } = await req.json()
+  const { prompt: base64, databaseFormat } = await req.json()
 
   try {
-    const result = streamText({
-      model: google('gemini-2.0-flash'),
+    const result = await generateObject({
+      model: google('gemini-2.0-flash-001'),
+      schema: DB_SCHEMA,
       messages: [
         {
           role: 'user',
           content: [
             {
               type: 'text',
-              text: PG_PROMPT
+              text: databaseFormat === 'mysql' ? MYSQL_PROMPT : PG_PROMPT
             },
             {
               type: 'image',
@@ -34,11 +48,12 @@ export async function POST(req: Request) {
           ]
         }
       ],
-      // maxTokens: 1024,
       temperature: 0.2
     })
 
-    return result.toDataStreamResponse()
+    return NextResponse.json({
+      data: result.object.results
+    })
   } catch (error) {
     let errorMessage = 'An error has ocurred with API Completions. Please try again.'
     // @ts-ignore

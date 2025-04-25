@@ -1,8 +1,13 @@
 import { create } from 'zustand'
 
+type Table = {
+  name: string
+  numberOfColumns: number
+}
+
 type SchemaData = {
   sqlSchema: string
-  tables: string[]
+  tables: Table[]
 }
 
 type SchemaState = {
