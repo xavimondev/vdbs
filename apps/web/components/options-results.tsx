@@ -29,7 +29,7 @@ export function OptionsResults() {
           )}
         </div>
       </Card>
-      <DatabaseDeployments onConnect={() => console.log('')} />
+      <DatabaseDeployments />
     </div>
   )
 }

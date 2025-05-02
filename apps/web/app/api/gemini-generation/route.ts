@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { generateObject } from 'ai'
 import { google } from '@ai-sdk/google'
-import { MYSQL_PROMPT, PG_PROMPT } from '@/prompt'
+import { MYSQL_PROMPT, PG_PROMPT, SQLITE_PROMPT } from '@/prompt'
 import { z } from 'zod'
 
 const DB_SCHEMA = z.object({
@@ -15,6 +15,12 @@ const DB_SCHEMA = z.object({
     )
   })
 })
+
+const prompts: Record<string, string> = {
+  'mysql': MYSQL_PROMPT,
+  'postgresql': PG_PROMPT,
+  'sqlite': SQLITE_PROMPT
+}
 
 export async function POST(req: Request) {
   if (process.env.NODE_ENV === 'development' && !process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
@@ -39,7 +45,7 @@ export async function POST(req: Request) {
           content: [
             {
               type: 'text',
-              text: databaseFormat === 'mysql' ? MYSQL_PROMPT : PG_PROMPT
+              text: prompts[databaseFormat] as string
             },
             {
               type: 'image',

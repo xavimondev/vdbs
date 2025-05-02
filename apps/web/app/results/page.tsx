@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 
 export default function Results() {
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col size-full'>
       <Header>
         <Button asChild variant='outline' size='sm'>
           <Link href='/'>
@@ -17,7 +17,7 @@ export default function Results() {
         </Button>
       </Header>
 
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 size-full'>
         <SchemaResults />
         <OptionsResults />
       </div>

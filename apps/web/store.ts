@@ -8,6 +8,7 @@ type Table = {
 type SchemaData = {
   sqlSchema: string
   tables: Table[]
+  databaseFormat: string
 }
 
 type SchemaState = {

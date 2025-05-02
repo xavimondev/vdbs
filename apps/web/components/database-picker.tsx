@@ -1,5 +1,5 @@
 'use client'
-import { MySQLIc, PostgreSQLIc } from '@/components/icons'
+import { MySQLIc, PostgreSQLIc, SQLiteIc } from '@/components/icons'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Button } from '@/components/ui/button'
 import { ChevronDownIcon } from 'lucide-react'
@@ -24,6 +24,12 @@ const schemas = [
     id: 'mysql',
     title: 'MySQL',
     Icon: <MySQLIc className='!size-6' />,
+    description: 'Popular open-source relational database management system.'
+  },
+  {
+    id: 'sqlite',
+    title: 'SQLite',
+    Icon: <SQLiteIc className='!size-6' />,
     description: 'Popular open-source relational database management system.'
   }
 ]

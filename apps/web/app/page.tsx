@@ -97,6 +97,7 @@ export default function Page() {
 
       const results = await response.json()
       const { sqlSchema, tables } = results.data
+
       if (
         sqlSchema.trim() === 'Invalid SQL diagram.' ||
         !sqlSchema.includes('CREATE TABLE')
@@ -108,7 +109,8 @@ export default function Page() {
 
       const schema = {
         sqlSchema,
-        tables
+        tables,
+        databaseFormat: databaseFormat as string
       }
 
       setSchema(schema)
