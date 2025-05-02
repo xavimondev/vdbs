@@ -21,64 +21,6 @@ export default function Page() {
   const [databaseFormat, setDatabaseFormat] = useState<string | null>(null)
   const setSchema = useSchemaStore((state) => state.setSchema)
   const router = useRouter()
-  // const { complete, completion, isLoading } = useCompletion({
-  //   api: 'api/gemini-generation',
-  //   onFinish: (_, completion) => {
-  //     if (!completion) {
-  //       return
-  //     }
-
-  //     if (
-  //       completion.trim() === 'Invalid SQL diagram.' ||
-  //       !completion.includes('CREATE TABLE') ||
-  //       !completion.includes('--TABLE')
-  //     ) {
-  //       toast.error('This is not a valid SQL diagram. Please try again.')
-  //       return
-  //     }
-
-  //     // const sqlSchema = completion
-  //     //   .split('--TABLE\n')
-  //     //   .filter((table: string) => table !== '')
-  //     //   .join('\n')
-  //     //   .trim()
-
-  //     const tables = extractTableNames(completion)
-  //     const hasUndefined = tables.some((tbl) => tbl === undefined)
-  //     if (hasUndefined) {
-  //       toast.error('An error has ocurred while extracting tables')
-  //       return
-  //     }
-  //     // console.log(tables)
-
-  //     const data = {
-  //       sqlSchema: completion,
-  //       tables: tables as string[]
-  //     }
-
-  //     setFinished(true)
-  //     setSchema(data)
-  //     setSupabaseLinkTables(undefined)
-  //     // Saving in db the generation
-  //     // toast.promise(saveGeneration(data), {
-  //     //   loading: 'Saving Generation...',
-  //     //   success: () => {
-  //     //     setFinished(true)
-  //     //     setSchema(data)
-  //     //     setSupabaseLinkTables(undefined)
-  //     //     return `Generation saved successfully.`
-  //     //   },
-  //     //   error: 'An error has ocurred while saving data.'
-  //     // })
-  //   },
-  //   onError: (err) => {
-  //     const result = JSON.parse(err.message)
-  //     toast.error(result.message)
-
-  //     setBlobURL(null)
-  //     setFinished(true)
-  //   }
-  // })
 
   const getGenerationAI = async (base64: string) => {
     const toastId = toast.loading('Generation Database Schema')
