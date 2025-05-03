@@ -1,15 +1,18 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { UploadIcon } from 'lucide-react'
 import { toast } from 'sonner'
-import Image from 'next/image'
+
 import { cn } from '@/lib/utils'
 import { isSupportedImageType, toBase64 } from '@/utils'
+
 import { useSchemaStore } from '@/store'
+
 import { Header } from '@/components/header'
 import { DatabasePicker } from '@/components/database-picker'
-import { useRouter } from 'next/navigation'
 
 const LIMIT_MB = 2 * 1024 * 1024
 
@@ -34,8 +37,11 @@ export default function Page() {
           'Content-type': 'application/json'
         }
       })
-      if (response.status !== 200)
+      if (response.status === 429) {
+        throw new Error('You have reached your request limit for the day.')
+      } else if (response.status !== 200) {
         throw new Error('An error has ocurred while generation database schema')
+      }
 
       const results = await response.json()
       const { sqlSchema, tables } = results.data
@@ -56,7 +62,6 @@ export default function Page() {
       }
 
       setSchema(schema)
-      // toast.success('Schema generated')
       setTimeout(() => {
         router.push('/results')
       }, 1000)
@@ -158,7 +163,7 @@ export default function Page() {
             src={blobURL}
             unoptimized
             fill
-            className='lg:object-contain object-cover min-h-16'
+            className='lg:object-contain object-cover'
             alt='Uploaded image'
           />
         ) : (

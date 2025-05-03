@@ -3,6 +3,8 @@ import { generateObject } from 'ai'
 import { google } from '@ai-sdk/google'
 import { MYSQL_PROMPT, PG_PROMPT, SQLITE_PROMPT } from '@/prompt'
 import { z } from 'zod'
+import { uptash } from '@/utils/rate-limit'
+import { headers } from 'next/headers'
 
 const DB_SCHEMA = z.object({
   results: z.object({
@@ -17,10 +19,13 @@ const DB_SCHEMA = z.object({
 })
 
 const prompts: Record<string, string> = {
-  'mysql': MYSQL_PROMPT,
-  'postgresql': PG_PROMPT,
-  'sqlite': SQLITE_PROMPT
+  mysql: MYSQL_PROMPT,
+  postgresql: PG_PROMPT,
+  sqlite: SQLITE_PROMPT
 }
+
+const ratelimit =
+  process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN ? uptash : false
 
 export async function POST(req: Request) {
   if (process.env.NODE_ENV === 'development' && !process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
@@ -31,6 +36,20 @@ export async function POST(req: Request) {
       },
       { status: 400 }
     )
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    if (ratelimit) {
+      const ip = (await headers()).get('x-forwarded-for') ?? 'local'
+
+      const { success } = await ratelimit.limit(ip)
+      if (!success) {
+        return NextResponse.json(
+          { message: 'You have reached your request limit for the day.' },
+          { status: 429 }
+        )
+      }
+    }
   }
 
   const { prompt: base64, databaseFormat } = await req.json()
