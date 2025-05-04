@@ -1,28 +1,10 @@
 import { NextResponse } from 'next/server'
 import { generateObject } from 'ai'
 import { google } from '@ai-sdk/google'
-import { MYSQL_PROMPT, PG_PROMPT, SQLITE_PROMPT } from '@/prompt'
-import { z } from 'zod'
 import { uptash } from '@/utils/rate-limit'
 import { headers } from 'next/headers'
 
-const DB_SCHEMA = z.object({
-  results: z.object({
-    sqlSchema: z.string(),
-    tables: z.array(
-      z.object({
-        name: z.string(),
-        numberOfColumns: z.number()
-      })
-    )
-  })
-})
-
-const prompts: Record<string, string> = {
-  mysql: MYSQL_PROMPT,
-  postgresql: PG_PROMPT,
-  sqlite: SQLITE_PROMPT
-}
+import { DB_SCHEMA, prompts } from '@/utils/ai'
 
 const ratelimit =
   process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN ? uptash : false
@@ -38,7 +20,7 @@ export async function POST(req: Request) {
     )
   }
 
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'production') {
     if (ratelimit) {
       const ip = (await headers()).get('x-forwarded-for') ?? 'local'
 
