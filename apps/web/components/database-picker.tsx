@@ -31,7 +31,7 @@ type DatabasePickerProps = {
 
 export function DatabasePicker({ databaseFormat, setDatabaseFormat }: DatabasePickerProps) {
   return (
-    <Card className='shadow-sm bg-neutral-900'>
+    <Card className='shadow-sm bg-neutral-900 rounded-md'>
       <CardHeader>
         <CardTitle>Choose Database Schema</CardTitle>
         <CardDescription hidden>Choose a database provider to deploy your schema.</CardDescription>
