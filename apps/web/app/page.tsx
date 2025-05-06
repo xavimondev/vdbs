@@ -21,7 +21,7 @@ export default function Page() {
   const inputRef = useRef<HTMLInputElement>(null)
   const [blobURL, setBlobURL] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [databaseFormat, setDatabaseFormat] = useState<string | null>(null)
+  const [databaseFormat, setDatabaseFormat] = useState<string>('postgresql')
   const setSchema = useSchemaStore((state) => state.setSchema)
   const router = useRouter()
 
@@ -140,68 +140,68 @@ export default function Page() {
   }, [])
 
   return (
-    <div className='flex flex-col w-full'>
-      <Header>
+    <div className='flex flex-col w-full space-y-4'>
+      <Header />
+      <div className='flex flex-col space-y-5 size-full'>
         <DatabasePicker databaseFormat={databaseFormat} setDatabaseFormat={setDatabaseFormat} />
-      </Header>
-      <div
-        className={cn(
-          'rounded-md border-2 border-dashed text-gray-700 dark:text-gray-300 cursor-pointer transition-colors ease-in-out bg-zinc-100 dark:bg-zinc-900 relative group select-none grow pointer-events-none [@media(hover:hover)]:pointer-events-auto',
-          {
-            'border-gray-500 hover:border-black dark:border-gray-600 dark:hover:border-gray-400':
-              !isDraggingOver,
-            'border-gray-300 dark:border-gray-700': isDraggingOver
-          },
-          {
-            'pointer-events-none border-[2px] animate-blink': isLoading
-          }
-        )}
-        onClick={() => inputRef.current?.click()}
-      >
-        {blobURL ? (
-          <Image
-            src={blobURL}
-            unoptimized
-            fill
-            className='lg:object-contain object-cover'
-            alt='Uploaded image'
+        <div
+          className={cn(
+            'rounded-md border-2 border-dashed text-gray-300 cursor-pointer transition-colors ease-in-out bg-neutral-950 relative group select-none grow pointer-events-none [@media(hover:hover)]:pointer-events-auto',
+            {
+              'border-gray-600 hover:border-gray-500': !isDraggingOver,
+              'border-gray-700': isDraggingOver
+            },
+            {
+              'pointer-events-none border-[2px] animate-blink': isLoading
+            }
+          )}
+          onClick={() => inputRef.current?.click()}
+        >
+          {blobURL ? (
+            <Image
+              src={blobURL}
+              unoptimized
+              fill
+              className='lg:object-contain object-cover'
+              alt='Uploaded image'
+            />
+          ) : (
+            <div
+              className={cn(
+                'rounded-md flex flex-col w-full h-full p-3 items-center justify-center text-center absolute bg-neutral-900 text-lg'
+              )}
+            >
+              <div className='rounded-full bg-primary/10 p-4'>
+                <UploadIcon className='size-10 text-primary' />
+              </div>
+              <p className='font-semibold mb-1 sm:mb-3 text-xl mt-3'>
+                Drop or paste anywhere, or click to upload
+              </p>
+              <p className='hidden [@media(hover:hover)]:block text-sm text-muted-foreground'>
+                Supports PNG, JPEG, and JPG (max 2MB)
+              </p>
+              <div className='w-56 space-y-4 [@media(hover:hover)]:hidden pointer-events-auto'>
+                <button className='rounded-full w-full py-3 bg-black dark:bg-white text-white dark:text-black'>
+                  Tap to upload
+                </button>
+                <input
+                  type='text'
+                  onKeyDown={(e) => e.preventDefault()}
+                  placeholder='Hold to paste'
+                  onClick={(e) => e.stopPropagation()}
+                  className='text-center w-full rounded-full py-3 bg-gray-200 dark:bg-gray-800 placeholder-black dark:placeholder-white focus:bg-white dark:focus:bg-black focus:placeholder-gray-700 dark:focus:placeholder-gray-300 transition-colors ease-in-out focus:outline-none border-2 focus:border-green-300 dark:focus:border-green-700 border-transparent'
+                />
+              </div>
+            </div>
+          )}
+          <input
+            type='file'
+            className='hidden'
+            ref={inputRef}
+            onChange={handleInputChange}
+            accept='image/jpeg, image/png, image/webp'
           />
-        ) : (
-          <div
-            className={cn(
-              'rounded-md flex flex-col w-full h-full p-3 items-center justify-center text-center absolute bg-zinc-100/70 dark:bg-zinc-900/70 text-lg'
-            )}
-          >
-            <div className='rounded-full bg-primary/10 p-4'>
-              <UploadIcon className='size-10 text-primary' />
-            </div>
-            <p className='font-semibold mb-1 sm:mb-3 text-xl mt-3'>
-              Drop or paste anywhere, or click to upload
-            </p>
-            <p className='hidden [@media(hover:hover)]:block text-sm text-muted-foreground'>
-              Supports PNG, JPEG, and JPG (max 2MB)
-            </p>
-            <div className='w-56 space-y-4 [@media(hover:hover)]:hidden pointer-events-auto'>
-              <button className='rounded-full w-full py-3 bg-black dark:bg-white text-white dark:text-black'>
-                Tap to upload
-              </button>
-              <input
-                type='text'
-                onKeyDown={(e) => e.preventDefault()}
-                placeholder='Hold to paste'
-                onClick={(e) => e.stopPropagation()}
-                className='text-center w-full rounded-full py-3 bg-gray-200 dark:bg-gray-800 placeholder-black dark:placeholder-white focus:bg-white dark:focus:bg-black focus:placeholder-gray-700 dark:focus:placeholder-gray-300 transition-colors ease-in-out focus:outline-none border-2 focus:border-green-300 dark:focus:border-green-700 border-transparent'
-              />
-            </div>
-          </div>
-        )}
-        <input
-          type='file'
-          className='hidden'
-          ref={inputRef}
-          onChange={handleInputChange}
-          accept='image/jpeg, image/png, image/webp'
-        />
+        </div>
       </div>
     </div>
   )

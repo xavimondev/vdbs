@@ -1,82 +1,62 @@
 'use client'
+import { Dispatch, SetStateAction } from 'react'
 import { MySQLIc, PostgreSQLIc, SQLiteIc } from '@/components/icons'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Button } from '@/components/ui/button'
-import { ChevronDownIcon } from 'lucide-react'
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList
-} from '@/components/ui/command'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 const schemas = [
   {
     id: 'postgresql',
     title: 'PostgreSQL',
-    Icon: <PostgreSQLIc className='!size-6' />,
+    Icon: <PostgreSQLIc className='!size-8' />,
     description: 'Advanced open-source relational database with strong SQL compliance.'
   },
   {
     id: 'mysql',
     title: 'MySQL',
-    Icon: <MySQLIc className='!size-6' />,
+    Icon: <MySQLIc className='!size-8' />,
     description: 'Popular open-source relational database management system.'
   },
   {
     id: 'sqlite',
     title: 'SQLite',
-    Icon: <SQLiteIc className='!size-6' />,
+    Icon: <SQLiteIc className='!size-8' />,
     description: 'Popular open-source relational database management system.'
   }
 ]
 
 type DatabasePickerProps = {
-  databaseFormat: string | null
-  setDatabaseFormat: Dispatch<SetStateAction<string | null>>
+  databaseFormat: string
+  setDatabaseFormat: Dispatch<SetStateAction<string>>
 }
 
 export function DatabasePicker({ databaseFormat, setDatabaseFormat }: DatabasePickerProps) {
-  const [open, setOpen] = useState(false)
-
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button variant='outline' className='ml-auto'>
-          {!databaseFormat ? 'Select Database Schema' : databaseFormat}{' '}
-          <ChevronDownIcon className='text-muted-foreground' />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className='p-0' align='end'>
-        <Command>
-          <CommandInput placeholder='Search database schema...' />
-          <CommandList>
-            <CommandEmpty>No roles found.</CommandEmpty>
-            <CommandGroup>
-              {schemas.map(({ id, title, description, Icon }) => (
-                <CommandItem
-                  key={id}
-                  className='flex items-center gap-2.5 px-3 py-2'
-                  value={id}
-                  onSelect={(value) => {
-                    setDatabaseFormat(value)
-                    setOpen(false)
-                  }}
-                >
-                  {Icon}
-                  <div className='flex flex-col items-start'>
-                    <p>{title}</p>
-                    <p className='text-xs text-muted-foreground'>{description}</p>
-                  </div>
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+    <Card className='shadow-sm bg-neutral-900'>
+      <CardHeader>
+        <CardTitle>Choose Database Schema</CardTitle>
+        <CardDescription hidden>Choose a database provider to deploy your schema.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className='grid grid-cols-6 gap-2'>
+          {schemas.map((option) => (
+            <div
+              key={option.id}
+              className={`border rounded-md p-2 cursor-pointer transition-all hover:shadow-md ${
+                databaseFormat === option.id
+                  ? 'border-primary bg-primary/5'
+                  : 'border-gray-600 hover:border-gray-400'
+              }`}
+              onClick={() => setDatabaseFormat(option.id)}
+            >
+              <div className='flex flex-col items-center text-center gap-2'>
+                {option.Icon}
+                <h4 className='font-medium text-sm'>{option.title}</h4>
+                <p className='text-xs text-muted-foreground line-clamp-2'>{option.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   )
 }

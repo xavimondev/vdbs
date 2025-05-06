@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 import { AppLogo } from '@/components/app-logo'
 
-export function Header({ children }: { children: ReactNode }) {
+export function Header({ children }: { children?: ReactNode }) {
   return (
     <header>
       <div className='flex flex-col sm:flex-row pb-4 sm:items-center gap-2 sm:gap-0 w-full'>
