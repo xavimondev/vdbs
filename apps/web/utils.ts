@@ -1,10 +1,10 @@
 import { customAlphabet } from 'nanoid'
 import confetti from 'canvas-confetti'
 
-type SupportedImageTypes = 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp'
+type SupportedImageTypes = 'image/jpeg' | 'image/png' | 'image/webp'
 
 export const isSupportedImageType = (type: string): type is SupportedImageTypes => {
-  return ['image/jpeg', 'image/png', 'image/gif', 'image/webp'].includes(type)
+  return ['image/jpeg', 'image/png', 'image/webp'].includes(type)
 }
 
 export const toBase64 = (file: File | Blob): Promise<string> => {
@@ -73,4 +73,16 @@ export const getReferenceId = (connectionString: string) => {
     return referenceId
   }
   return
+}
+
+export const extractTableNames = (sqlScript: string) => {
+  const regex = /CREATE TABLE "public"\."([^"]+)"/g
+  const tableNames = []
+  let match
+
+  while ((match = regex.exec(sqlScript)) !== null) {
+    tableNames.push(match[1])
+  }
+
+  return tableNames
 }

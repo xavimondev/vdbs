@@ -10,20 +10,31 @@ import { Footer } from '@/components/footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
-const title = 'vdbs - Transform Designs to Database Schemas with AI'
+const title = 'Snap2SQL - Convert diagrams to SQL with AI'
 const description =
-  'Manage database migrations with a single click, accessing AI-generated SQL code from a database diagram and a command line script for instant local execution.'
+  'Snap2SQL lets you instantly convert database diagrams into clean SQL schemas using AI. Support for MySQL and PostgreSQL. Try your first scan free!'
 
 export const metadata: Metadata = {
   metadataBase: new URL(APP_URL),
   title,
   description,
-  keywords: ['vision ai', 'supabase', 'postgress', 'sql', 'migrations'],
+  keywords: [
+    'ERD to SQL',
+    'diagram to SQL',
+    'convert ERD',
+    'SQL schema generator',
+    'AI SQL builder',
+    'database diagram OCR',
+    'MySQL generator',
+    'PostgreSQL schema',
+    'Snap2SQL',
+    'ER diagram parser'
+  ],
   openGraph: {
     title,
     description,
     url: '/',
-    siteName: 'vdbs',
+    siteName: 'snap2sql',
     locale: 'en_US',
     type: 'website',
     images: [
@@ -37,11 +48,12 @@ export const metadata: Metadata = {
   }
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }): JSX.Element {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang='en'>
-      <body className={cn(inter.className, 'dark p-5 lg:p-12 min-h-dvh flex flex-col')}>
-        <Header />
+      <body
+        className={cn(inter.className, 'dark container mx-auto px-4 py-8 min-h-dvh flex flex-col')}
+      >
         <main className='grow flex flex-col lg:flex-row gap-6'>
           <div className='absolute inset-0 -z-10 size-full bg-transparent bg-[radial-gradient(#e5e7eb_-4px,transparent_1px)] [background-size:16px_16px]'></div>
           {children}

@@ -1,5 +1,5 @@
 {
-  "name": "supamigration",
+  "name": "code2sql",
   "private": true,
   "scripts": {
     "build": "turbo build",
@@ -21,9 +21,9 @@
     "prettier": "^3.2.5",
     "turbo": "latest"
   },
-  "packageManager": "pnpm@8.9.0",
+  "packageManager": "pnpm@8.15.9",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "dependencies": {
     "@changesets/cli": "2.27.1"

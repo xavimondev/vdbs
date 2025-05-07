@@ -1,9 +1,13 @@
 import { NextResponse } from 'next/server'
-import { StreamingTextResponse, streamText } from 'ai'
+import { generateObject } from 'ai'
 import { google } from '@ai-sdk/google'
-import { PROMPT } from '@/prompt'
+import { uptash } from '@/utils/rate-limit'
+import { headers } from 'next/headers'
 
-export const runtime = 'edge'
+import { DB_SCHEMA, prompts } from '@/utils/ai'
+
+const ratelimit =
+  process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN ? uptash : false
 
 export async function POST(req: Request) {
   if (process.env.NODE_ENV === 'development' && !process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
@@ -16,18 +20,33 @@ export async function POST(req: Request) {
     )
   }
 
-  const { prompt: base64 } = await req.json()
+  if (process.env.NODE_ENV === 'production') {
+    if (ratelimit) {
+      const ip = (await headers()).get('x-forwarded-for') ?? 'local'
+
+      const { success } = await ratelimit.limit(ip)
+      if (!success) {
+        return NextResponse.json(
+          { message: 'You have reached your request limit for the day.' },
+          { status: 429 }
+        )
+      }
+    }
+  }
+
+  const { prompt: base64, databaseFormat } = await req.json()
 
   try {
-    const result = await streamText({
-      model: google('models/gemini-1.5-flash-latest'),
+    const result = await generateObject({
+      model: google('gemini-2.0-flash-001'),
+      schema: DB_SCHEMA,
       messages: [
         {
           role: 'user',
           content: [
             {
               type: 'text',
-              text: PROMPT
+              text: prompts[databaseFormat] as string
             },
             {
               type: 'image',
@@ -36,11 +55,12 @@ export async function POST(req: Request) {
           ]
         }
       ],
-      maxTokens: 1024,
       temperature: 0.2
     })
 
-    return new StreamingTextResponse(result.toAIStream())
+    return NextResponse.json({
+      data: result.object.results
+    })
   } catch (error) {
     let errorMessage = 'An error has ocurred with API Completions. Please try again.'
     // @ts-ignore
