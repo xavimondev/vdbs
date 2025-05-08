@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://x.com/xavimonp/status/1785862861836709980" target="_blank">
-    <img src='https://vdbs.vercel.app/medal.png' width="20%" alt="Medal image" />
+    <img src='https://snap2sql.app/medal.png' width="20%" alt="Medal image" />
   </a>
   <a href="https://x.com/xavimonp/status/1785862861836709980" target="_blank">
     <p> Supabase Open Source Hackathon 2024 Winner 🤩</p>
@@ -39,7 +39,7 @@ vdbs is inspired by [v0.dev from Vercel](https://v0.dev/), which allows you to g
 
 ## Requirements
 
-- Node >= 18
+- Node >= 20
 - pnpm > 8
 
 ## Stack
@@ -69,6 +69,13 @@ vdbs is inspired by [v0.dev from Vercel](https://v0.dev/), which allows you to g
 - Go to the [OpenAI web](https://openai.com/).
 - Sign in to your account or create a new one.
 - Navigate to your [API settings](https://platform.openai.com/account/api-keys).
+- Generate an Secret key.
+- Copy the generated Secret key.
+
+### GOOGLE_GENERATIVE_AI_API_KEY
+
+- Go to the [Google AI Studio](https://aistudio.google.com/app/apikey).
+- Sign in to your account or create a new one.
 - Generate an Secret key.
 - Copy the generated Secret key.
 
