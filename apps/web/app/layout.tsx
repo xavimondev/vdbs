@@ -5,7 +5,6 @@ import { Analytics } from '@vercel/analytics/react'
 import { cn } from '@/lib/utils'
 import { APP_URL } from '@/constants'
 import { Toaster } from '@/components/ui/sonner'
-import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 
 const inter = Inter({ subsets: ['latin'] })
