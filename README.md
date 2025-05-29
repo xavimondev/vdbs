@@ -1,9 +1,6 @@
 <div align="center">
-  <a href="https://x.com/xavimonp/status/1785862861836709980" target="_blank">
-    <img src='https://snap2sql.app/medal.png' width="20%" alt="Medal image" />
-  </a>
-  <a href="https://x.com/xavimonp/status/1785862861836709980" target="_blank">
-    <p> Supabase Open Source Hackathon 2024 Winner 🤩</p>
+  <a href="https://snap2sql.app" target="_blank">
+    <img src='https://snap2sql.app/banner.jpg' width="100%" alt="App banner" />
   </a>
 </div>
 
@@ -23,44 +20,22 @@
 
 - [License](#license)
 
-- [Troubleshooting](#troubleshooting)
-
 ## Introduction
 
-vdbs stands for **"vision database sql"** This project allows you to convert your database diagrams into SQL Schema using the capabilities of [Vision API](https://platform.openai.com/docs/guides/vision). Once your SQL code is ready, you have three integration options for your Supabase projects:
-
-1. Simply copy and paste the SQL schema into your Supabase dashboard.
-
-2. Copy the npm command generated after your SQL schema is ready and paste it into your app. This creates a migration file containing the SQL schema.
-
-3. Use your database connection string, and the SQL schema will be deployed to your remote Supabase project.
-
-vdbs is inspired by [v0.dev from Vercel](https://v0.dev/), which allows you to generate UI based on images or your ideas. You can copy the code or use the npm command and integrate the generated code into your project.
+Snap2SQL lets you instantly convert database diagrams into clean SQL schemas using AI. Support for MySQL and PostgreSQL.
 
 ## Requirements
 
 - Node >= 20
-- pnpm > 8
+- pnpm >= 9
 
 ## Stack
-
-### web
 
 - [next](https://www.npmjs.com/package/next): A framework for server-rendered React applications.
 - [shadcn/ui](https://ui.shadcn.com/): Provides beautifully designed components for UI.
 - [monaco-editor/react](https://www.npmjs.com/package/monaco-editor): A Monaco Editor wrapper for React applications.
 - [zustand](https://www.npmjs.com/package/zustand): A small, fast, and scalable state management library for React.
 - [typescript](https://www.npmjs.com/package/typescript): A typed superset of JavaScript that compiles to plain JavaScript.
-
-### Cli
-
-- [tsup](https://github.com/egoist/tsup): A TypeScript-focused module bundler.
-- [chalk](https://github.com/chalk/chalk): Chalk is a library for styling terminal text with color and formatting options, making console output more visually appealing and readable.
-- [commander](https://github.com/tj/commander.js/): Commander is a feature-rich library for creating command-line interfaces (CLIs) in Node.js.
-- [execa](https://github.com/sindresorhus/execa): Execa is a package that simplifies running external commands in Node.js, providing a more straightforward and powerful interface than Node.js' built-in child_process module.
-- [glob](https://github.com/isaacs/node-glob): Glob is a package used for pattern matching files and directories, enabling developers to easily find and work with sets of file paths using wildcard characters.
-- [ora](https://github.com/sindresorhus/ora): Ora is a library that creates elegant terminal spinners and loading indicators.
-- [prompts](https://github.com/terkelg/prompts): Prompts is a user-friendly library for creating interactive command-line prompts, allowing developers to easily gather user input in a structured and customizable way. Prompts Repository
 
 ## Setting Up
 
@@ -88,10 +63,10 @@ vdbs is inspired by [v0.dev from Vercel](https://v0.dev/), which allows you to g
 
 ## Run Locally
 
-1.Clone the vdbs repository:
+1.Clone the snap2sql repository:
 
 ```sh
-git clone https://github.com/xavimondev/vdbs
+git clone https://github.com/xavimondev/snap2sql
 ```
 
 2.Install the dependencies:
@@ -108,22 +83,10 @@ pnpm dev
 
 ## Contributors
 
-<a href="https://github.com/xavimondev/vdbs/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=xavimondev/vdbs" />
+<a href="https://github.com/xavimondev/snap2sql/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=xavimondev/snap2sql" />
 </a>
 
 ## License
 
-[**MIT**](https://github.com/xavimondev/vdbs/blob/main/LICENSE).
-
-## Troubleshooting
-
-### Using Bun: Could not determine executable to run for package supabase
-
-Upgrade bun's version
-
-```bash
-bun upgrade
-```
-
-More details: **https://twitter.com/bunjavascript/status/1734470860755566815**
+[**MIT**](https://github.com/xavimondev/snap2sql/blob/main/LICENSE).
