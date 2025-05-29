@@ -4,22 +4,6 @@
   </a>
 </div>
 
-## Table of Contents
-
-- [Introduction](#introduction)
-
-- [Requirements](#requirements)
-
-- [Stack](#stack)
-
-- [Setting Up](#setting-up)
-
-- [Run Locally](#run-locally)
-
-- [Contributors](#contributors)
-
-- [License](#license)
-
 ## Introduction
 
 Snap2SQL lets you instantly convert database diagrams into clean SQL schemas using AI. Support for MySQL and PostgreSQL.
