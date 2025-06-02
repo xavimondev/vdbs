@@ -30,7 +30,7 @@ export default function Page() {
 
     try {
       setIsLoading(true)
-      const response = await fetch('api/gemini-generation', {
+      const response = await fetch('api/ai-generation', {
         method: 'POST',
         body: JSON.stringify({ prompt: base64, databaseFormat }),
         headers: {
