@@ -146,7 +146,18 @@ export default function Page() {
         <DatabasePicker databaseFormat={databaseFormat} setDatabaseFormat={setDatabaseFormat} />
         <div
           className={cn(
-            'rounded-md border-2 border-dashed text-gray-300 cursor-pointer transition-colors ease-in-out bg-neutral-950 relative group select-none grow pointer-events-none [@media(hover:hover)]:pointer-events-auto',
+            `rounded-md 
+            border-2 
+            border-dashed 
+            text-gray-300 
+            cursor-pointer 
+            transition-colors 
+            ease-in-out 
+            bg-neutral-950 
+            relative 
+            group 
+            select-none 
+            grow`,
             {
               'border-gray-600 hover:border-gray-500': !isDraggingOver,
               'border-gray-700': isDraggingOver
