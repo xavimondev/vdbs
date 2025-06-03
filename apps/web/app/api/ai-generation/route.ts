@@ -65,21 +65,13 @@ export async function POST(req: Request) {
       data: result.object.results
     })
   } catch (error) {
-    // @ts-ignore
-    const statusCode = error?.lastError?.statusCode ?? error.statusCode
     let errorMessage = 'An error has ocurred with API Completions. Please try again.'
-
-    if (statusCode === 401) {
+    // @ts-ignore
+    if (error.status === 401) {
       errorMessage = 'The provided API Key is invalid. Please enter a valid API Key.'
-    } /*else if (statusCode === 429) {
-      errorMessage = 'You exceeded your current quota, please check your plan and billing details.'
-    }*/
-
-    return NextResponse.json(
-      {
-        message: errorMessage
-      },
-      { status: statusCode }
-    )
+    }
+    // @ts-ignore
+    const { name, status, headers } = error
+    return NextResponse.json({ name, status, headers, message: errorMessage }, { status })
   }
 }
