@@ -1,7 +1,8 @@
 'use client'
-import { Dispatch, SetStateAction } from 'react'
 import { MySQLIc, PostgreSQLIc, SQLiteIc } from '@/components/icons'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { useSchemaStore } from '@/store'
+import { DatabaseFormat } from '@/types/database'
 
 const schemas = [
   {
@@ -24,12 +25,10 @@ const schemas = [
   }
 ]
 
-type DatabasePickerProps = {
-  databaseFormat: string
-  setDatabaseFormat: Dispatch<SetStateAction<string>>
-}
+export function DatabasePicker() {
+  const databaseFormat = useSchemaStore((state) => state.databaseFormat)
+  const setDatabaseFormat = useSchemaStore((state) => state.setDatabaseFormat)
 
-export function DatabasePicker({ databaseFormat, setDatabaseFormat }: DatabasePickerProps) {
   return (
     <Card className='shadow-sm bg-neutral-900 rounded-md'>
       <CardHeader>
@@ -46,7 +45,7 @@ export function DatabasePicker({ databaseFormat, setDatabaseFormat }: DatabasePi
                   ? 'border-primary bg-primary/5'
                   : 'border-gray-600 hover:border-gray-400'
               }`}
-              onClick={() => setDatabaseFormat(option.id)}
+              onClick={() => setDatabaseFormat(option.id as DatabaseFormat)}
             >
               <div className='flex flex-col items-center text-center gap-2'>
                 {option.Icon}

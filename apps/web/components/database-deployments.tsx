@@ -64,8 +64,9 @@ export function DatabaseDeployments() {
   const [selectedProvider, setSelectedProvider] = useState('neon')
   const [isDeploying, setIsDeploying] = useState(false)
   const schema = useSchemaStore((store) => store.schema)
+  const databaseFormat = useSchemaStore((store) => store.databaseFormat)
 
-  if (schema && schema.databaseFormat !== 'postgresql') return null
+  if (schema && databaseFormat !== 'postgresql') return null
 
   const isConnectionStringValid = (connectionString: string) => {
     if (!connectionString.trim() || !schema) {
